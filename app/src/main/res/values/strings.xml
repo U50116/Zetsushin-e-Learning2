@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">ZetsushinLeaning</string>
+    <string name="login">"  LOGIN  "</string>
+    <string name="account_new">新しいアカウント</string>
+    <string name="warning_text">IDとパスワードを入力してください</string>
+    <string name="passward_hint">パスワード</string>
+    <string name="id_hint">ID</string>
+    <string name="warning_text_new">新しいIDとパスワードを入力してください</string>
+    <string name="id_hint_new">新しいID</string>
+    <string name="passward_hint_new">新しいパスワード</string>
+    <string name="account_create">新規作成</string>
+</resources>
