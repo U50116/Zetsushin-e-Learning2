@@ -3,6 +3,7 @@ package com.example.enpit_p33.zetsushinleaning
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import io.realm.Realm
+import io.realm.RealmConfiguration
 import io.realm.kotlin.createObject
 import kotlinx.android.synthetic.main.activity_create.*
 import org.jetbrains.anko.alert
@@ -14,10 +15,13 @@ class CreateActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create)
-        realm = Realm.getDefaultInstance()
+        val realmConfig = RealmConfiguration.Builder()
+                .deleteRealmIfMigrationNeeded()
+                .build()
+        realm = Realm.getInstance(realmConfig)
         create_button.setOnClickListener{ create() }
-
     }
+
     fun create(){
         val id = new_id.text.toString()
         val pass = new_password.text.toString()
