@@ -153,6 +153,9 @@ class BetaActivity : AppCompatActivity() {
             }
             Log.d("debug", realm.where(QuestionList::class.java).findAll().size.toString())
         }
+
+        val intent = Intent(this, ConfusionActivity::class.java)
+        startActivity(intent)
     }
 
     override fun onDestroy() {
