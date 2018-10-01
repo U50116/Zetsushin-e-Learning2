@@ -50,14 +50,14 @@ class BetaActivity : AppCompatActivity() {
         val color:List<String> = listOf("紅舌","淡紅舌","淡白舌","紫舌")
 
         val WC = ViewGroup.LayoutParams.WRAP_CONTENT
-        val index = (realm.where(History::class.java).max("history_id")?.toInt() ?: 0)
-        val result = realm.where(Question::class.java).equalTo("history_id", index).findAll()
-        val x = Array(result.size, { i -> i }).toList()
+        val Id = (realm.where(Question::class.java).max("question_id")?.toInt() ?: 0)
+        val n = realm.where(Question::class.java).equalTo("question_id", Id).findAll()[0]?.questions!!
+        val x = Array(n.size, { i -> i }).toList()
         Collections.shuffle(x)
 
         for (num in x.indices) {
             //画像レイアウト
-            val image_n = (result[x[num]]?.question ?: 0)
+            val image_n = (n[x[num]]?.image_number ?: 0)
             q[num] = image_n
             val r = resources.getIdentifier("q" + image_n + "_image", "drawable", packageName) //drawableの画像指定
             val imageView = ImageView(this)
@@ -140,20 +140,18 @@ class BetaActivity : AppCompatActivity() {
         realm.executeTransaction{
             val maxId = realm.where(History::class.java).max("history_id")
             val nextId = (maxId?.toLong() ?: 0L) + 1
-            val x = Array(20, { i -> i })
             realm.createObject<History>(nextId).apply {
-                user_id = "123" // 後で
+                val maxId1 = realm.where(Question::class.java).max("question_id") // 後で
+                question_id = (maxId1?.toLong() ?: 0L)
+                for(i in ans.indices){
+                    val a = realm.createObject<Result>().apply {
+                        answer = ans[i]
+                    }
+                    result.add(a)
+                }
                 date = "10/1" // 後で
             }
-            for(i in x.indices){
-                realm.createObject<Question>().apply{
-                    history_id = nextId
-                    question_id = i
-                    question = q[i]
-                    answer = ans[i]
-                }
-            }
-            // Log.d("debug", realm.where(Question::class.java).findAll().size.toString())
+            Log.d("debug", realm.where(QuestionList::class.java).findAll().size.toString())
         }
     }
 

@@ -39,25 +39,50 @@ class AlphaActivity : AppCompatActivity() {
         setContentView(scrollView)
         val relativeLayout = RelativeLayout(this)
         scrollView.addView(relativeLayout)
-        question(relativeLayout)
+        val new_flag = true
+        question(relativeLayout, new_flag)
     }
 
-
     @SuppressLint("ResourceType")
-    fun question(relativeLayout: RelativeLayout) {
+    fun question(relativeLayout: RelativeLayout, new_flag: Boolean) {
         val ans:MutableList<String> = mutableListOf("","","","","","","","","","","","","","","","","","","","")
         val q:MutableList<Long> = mutableListOf(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
         val color:List<String> = listOf("紅舌","淡紅舌","淡白舌","紫舌")
 
         val WC = ViewGroup.LayoutParams.WRAP_CONTENT
         val x = Array(20, { i -> i }).toList()
+        val Id: Long = 0L
+
+        if(new_flag){
+            val maxId = realm.where(Question::class.java).max("question_id") // 後で
+            val nextId = (maxId?.toLong() ?: 0L) + 1
+
+            realm.executeTransaction {
+                realm.createObject<Question>(nextId).apply {
+                    for (j in x.indices) {
+                        val tmp = realm.where(ZetsuImage::class.java).equalTo("zetsu_color", color[Random().nextInt(4)]).findAll()
+                        val image_n = (tmp[Random().nextInt(tmp.size)]?.image_id ?: 0)
+                        Collections.shuffle(color)
+                        val a = realm.createObject<QuestionList>().apply {
+                            question_number = j + 1
+                            image_number = image_n
+                            choice1 = color[0]
+                            choice2 = color[1]
+                            choice3 = color[2]
+                            choice4 = color[3]
+                        }
+                        questions.add(a)
+                    }
+
+                }
+            }
+        }
 
         for (num in x.indices) {
             //画像レイアウト
-            val tmp = realm.where(ZetsuImage::class.java).equalTo("zetsu_color", color[Random().nextInt(4)]).findAll()
-            val image_n = (tmp[Random().nextInt(tmp.size)]?.image_id ?: 0)
-            q[num] = image_n
-            val r = resources.getIdentifier("q" + image_n + "_image", "drawable", packageName) //drawableの画像指定
+            val Id = (realm.where(Question::class.java).max("question_id")?.toInt() ?: 0)
+            val n = realm.where(Question::class.java).equalTo("question_id", Id).findAll()[0]?.questions!![num]
+            val r = resources.getIdentifier("q" + n?.image_number + "_image", "drawable", packageName) //drawableの画像指定
             val imageView = ImageView(this)
             imageView.setImageResource(r) //imageViewに画像設定
             @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH) //エラー回避
@@ -83,23 +108,22 @@ class AlphaActivity : AppCompatActivity() {
             val radioButton2 = RadioButton(this)
             val radioButton3 = RadioButton(this)
             val radioButton4 = RadioButton(this)
-            Collections.shuffle(color)
 
             @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
             radioButton1.id = 1000 + num * 4
-            radioButton1.text = color[0]
+            radioButton1.text = n?.choice1
             radioButton1.textSize = 32.0f
             @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
             radioButton2.id = 1001 + num * 4
-            radioButton2.text = color[1]
+            radioButton2.text = n?.choice2
             radioButton2.textSize = 32.0f
             @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
             radioButton3.id = 1002 + num * 4
-            radioButton3.text = color[2]
+            radioButton3.text = n?.choice3
             radioButton3.textSize = 32.0f
             @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
             radioButton4.id = 1003 + num * 4
-            radioButton4.text = color[3]
+            radioButton4.text = n?.choice4
             radioButton4.textSize = 32.0f
             radioGroup.addView(radioButton1)
             radioGroup.addView(radioButton2)
@@ -138,22 +162,19 @@ class AlphaActivity : AppCompatActivity() {
         realm.executeTransaction{
             val maxId = realm.where(History::class.java).max("history_id")
             val nextId = (maxId?.toLong() ?: 0L) + 1
-            val x = Array(20, { i -> i })
             realm.createObject<History>(nextId).apply {
-                user_id = "123" // 後で
+                val maxId1 = realm.where(Question::class.java).max("question_id") // 後で
+                question_id = (maxId1?.toLong() ?: 0L)
+                for(i in ans.indices){
+                    val a = realm.createObject<Result>().apply {
+                        answer = ans[i]
+                    }
+                    result.add(a)
+                }
                 date = "10/1" // 後で
             }
-            for(i in x.indices){
-                realm.createObject<Question>().apply{
-                    history_id = nextId
-                    question_id = i
-                    question = q[i]
-                    answer = ans[i]
-                }
-            }
-            // Log.d("debug", realm.where(Question::class.java).findAll().size.toString())
+            Log.d("debug", realm.where(QuestionList::class.java).findAll().size.toString())
         }
-
         val intent = Intent(this, BetaActivity::class.java)
         startActivity(intent)
     }
