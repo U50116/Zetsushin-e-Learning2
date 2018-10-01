@@ -19,7 +19,10 @@
         </activity>
         <activity android:name=".CreateActivity" />
         <activity android:name=".AlphaActivity" />
-        <activity android:name=".BetaActivity"></activity>
+        <activity android:name=".BetaActivity" />
+        <activity android:name=".ConfusionActivity" />//confusionとlogin入れ替えてる
+        <activity android:name=".ResultActivity" />
+        <activity android:name=".ReConfusionActivity"></activity>
     </application>
 
 </manifest>
