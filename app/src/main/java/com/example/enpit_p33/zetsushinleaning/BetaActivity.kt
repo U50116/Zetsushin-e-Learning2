@@ -20,10 +20,10 @@ import org.jetbrains.anko.alert
 import org.jetbrains.anko.yesButton
 import java.util.*
 import android.widget.RadioButton
-import io.realm.annotations.Beta
+import java.util.concurrent.CopyOnWriteArrayList
 
 
-class AlphaActivity : AppCompatActivity() {
+class BetaActivity : AppCompatActivity() {
     private lateinit var realm: Realm
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,12 +50,14 @@ class AlphaActivity : AppCompatActivity() {
         val color:List<String> = listOf("紅舌","淡紅舌","淡白舌","紫舌")
 
         val WC = ViewGroup.LayoutParams.WRAP_CONTENT
-        val x = Array(20, { i -> i }).toList()
+        val index = (realm.where(History::class.java).max("history_id")?.toInt() ?: 0)
+        val result = realm.where(Question::class.java).equalTo("history_id", index).findAll()
+        val x = Array(result.size, { i -> i }).toList()
+        Collections.shuffle(x)
 
         for (num in x.indices) {
             //画像レイアウト
-            val tmp = realm.where(ZetsuImage::class.java).equalTo("zetsu_color", color[Random().nextInt(4)]).findAll()
-            val image_n = (tmp[Random().nextInt(tmp.size)]?.image_id ?: 0)
+            val image_n = (result[x[num]]?.question ?: 0)
             q[num] = image_n
             val r = resources.getIdentifier("q" + image_n + "_image", "drawable", packageName) //drawableの画像指定
             val imageView = ImageView(this)
@@ -153,9 +155,6 @@ class AlphaActivity : AppCompatActivity() {
             }
             // Log.d("debug", realm.where(Question::class.java).findAll().size.toString())
         }
-
-        val intent = Intent(this, BetaActivity::class.java)
-        startActivity(intent)
     }
 
     override fun onDestroy() {
