@@ -72,8 +72,6 @@ class ResultActivity : AppCompatActivity() {
             val im_n_a = realm.where(Question::class.java).equalTo("question_id", a).findAll()[0]?.questions!![num]?.image_number
             val im_n_b = realm.where(Question::class.java).equalTo("question_id", b).findAll()[0]?.questions!![num]?.image_number
             val f_a = !realm.where(ZetsuImage::class.java).equalTo("image_id", im_n_a).findAll()[0]?.zetsu_color.equals(realm.where(History::class.java).equalTo("question_id", a).findAll()[0]?.result!![num]?.answer)
-            val f_b = !realm.where(ZetsuImage::class.java).equalTo("image_id", im_n_b).findAll()[0]?.zetsu_color.equals(realm.where(History::class.java).equalTo("question_id", b).findAll()[0]!!.result[num]?.answer)
-
             // 画像作成
             val r = resources.getIdentifier("q" + q_list!![num]?.image_number + "_image", "drawable", packageName) //drawableの画像指定
             Log.d("debug", r.toString())
@@ -128,6 +126,7 @@ class ResultActivity : AppCompatActivity() {
                 if (q[i]!!.question_number == q_list[num]?.question_number) {
                     Log.d("debug", q[i]!!.question_number.toString())
                     text2.text = "テスト問題2\n" + realm.where(History::class.java).equalTo("question_id", b).findAll()[0]!!.result[i]?.answer
+                    val f_b = !realm.where(ZetsuImage::class.java).equalTo("image_id", im_n_b).findAll()[0]?.zetsu_color.equals(realm.where(History::class.java).equalTo("question_id", b).findAll()[0]?.result!![i]?.answer)
                     if(f_b){
                         text2.setTextColor(Color.RED)
                         miss_b.add((im_n_b ?: 0))

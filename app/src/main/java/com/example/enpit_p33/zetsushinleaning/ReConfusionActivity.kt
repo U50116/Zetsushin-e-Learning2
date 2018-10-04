@@ -105,7 +105,7 @@ class ReConfusionActivity : AppCompatActivity() {
         val beta = intent.getIntExtra("BETA", 0)
         val intent = Intent(this, ResultActivity::class.java)
         intent.putExtra("ALPHA", alpha)
-        intent.putExtra("BETA", alpha)
+        intent.putExtra("BETA", beta)
         intent.putExtra("ID", user)
         startActivity(intent)
     }
