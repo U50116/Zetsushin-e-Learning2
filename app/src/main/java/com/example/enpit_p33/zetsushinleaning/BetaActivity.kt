@@ -135,9 +135,9 @@ class BetaActivity : AppCompatActivity() {
             val param4 = RelativeLayout.LayoutParams(WC, WC)
             text.text = "問" + (num+1).toString()
             text.textSize = 32.0f
-            param4.addRule(RelativeLayout.ABOVE, 1 + num * 3)
+            param4.addRule(RelativeLayout.ALIGN_TOP, 1 + num * 3)
             param4.addRule(RelativeLayout.ALIGN_LEFT, 1 + num * 3)
-            param4.setMargins(50, 0, 0, -250)
+            param4.setMargins(50, -70, 0, 0)
             relativeLayout.addView(text, param4)
         }
 

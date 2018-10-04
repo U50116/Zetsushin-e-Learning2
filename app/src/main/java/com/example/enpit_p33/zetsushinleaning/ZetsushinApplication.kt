@@ -17,6 +17,10 @@ class ZetsushinApplication : Application(){
             12 to "紫舌", 13 to "淡紅舌", 14 to "淡白舌", 15 to "紫舌", 16 to "淡紅舌",
             17 to "紫舌", 18 to "紫舌", 19 to "紅舌", 20 to "淡紅舌", 21 to "淡紅舌")
 
+    val imagelist = listOf("1-1", "1-2", "1-3", "2-1", "2-2", "2-3", "2-4", "2-5",
+                           "2-6", "2-7", "2-8", "3-1", "3-3", "4-1", "4-2", "4-3",
+                           "4-4", "4-5", "4-6", "4-7", "4-8")
+
     override fun onCreate(){
         super.onCreate()
 
@@ -31,6 +35,14 @@ class ZetsushinApplication : Application(){
         Log.d("debug", "Result: " + realm.where(Result::class.java).findAll().size.toString())
         Log.d("debug", "ZetsuImage: " + realm.where(ZetsuImage::class.java).findAll().size.toString())
         Log.d("debug", "ZetsuImage_size: " + image.size.toString())
+
+        /*
+        for(i in Array(imagelist.size, {i -> i})){
+            imagelist[i].split("-")[0]
+        }
+        */
+
+
     }
     private fun saveDate(){
         val realmConfig = RealmConfiguration.Builder()

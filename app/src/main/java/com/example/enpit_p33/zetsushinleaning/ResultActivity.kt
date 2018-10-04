@@ -92,16 +92,6 @@ class ResultActivity : AppCompatActivity() {
             }
             relativeLayout.addView(imageView, param1)
 
-            val text = TextView(this)
-            text.id = 100
-            val param = RelativeLayout.LayoutParams(WC, WC)
-            text.text = "問" + (num+1).toString()
-            text.textSize = 32.0f
-            param.addRule(RelativeLayout.ABOVE, 1 + num)
-            param.addRule(RelativeLayout.ALIGN_LEFT, 1 + num)
-            param.setMargins(50, 0, 0, -250)
-            relativeLayout.addView(text, param)
-
             // テキスト
             val text1 = TextView(this)
             text1.id = 1000 + num * 3
@@ -155,6 +145,16 @@ class ResultActivity : AppCompatActivity() {
             param4.addRule(RelativeLayout.ALIGN_LEFT, 1000 + num * 3)
             param4.setMargins(0, 50, 0, 0)
             relativeLayout.addView(text3, param4)
+
+            val text = TextView(this)
+            text.id = 100
+            val param = RelativeLayout.LayoutParams(WC, WC)
+            text.text = "問" + (num+1).toString()
+            text.textSize = 32.0f
+            param.addRule(RelativeLayout.ALIGN_TOP, 1 + num)
+            param.addRule(RelativeLayout.ALIGN_LEFT, 1 + num)
+            param.setMargins(50, -70, 0, 0)
+            relativeLayout.addView(text, param)
         }
         val title = TextView(this)
         title.id = 10001
