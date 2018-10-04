@@ -52,7 +52,7 @@ class CommentActivity : AppCompatActivity() {
             val imageView = ImageView(this)
             imageView.setImageResource(r) //imageViewに画像設定
             @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH) //エラー回避
-            imageView.id = 1 + num
+            imageView.id = 1 + num * 2
             val param1 = RelativeLayout.LayoutParams(WC, WC)
             if (num == 0) {
                 param1.addRule(RelativeLayout.ALIGN_PARENT_LEFT)
@@ -66,14 +66,15 @@ class CommentActivity : AppCompatActivity() {
             relativeLayout.addView(imageView, param1)
 
             val r1 = resources.getIdentifier("q" + real[miss_ans[num]] + "_image", "drawable", packageName) //drawableの画像指定
-            Log.d("debug", r.toString())
+            Log.d("debug", r1.toString())
             val imageView1 = ImageView(this)
-            imageView.setImageResource(r1) //imageViewに画像設定
+            imageView1.setImageResource(r1) //imageViewに画像設定
             @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH) //エラー回避
-            imageView.id = 2 + num
+            imageView1.id = 2 + num * 2
             val param2 = RelativeLayout.LayoutParams(WC, WC)
-            param2.addRule(RelativeLayout.RIGHT_OF, 1 + num)
-            param2.addRule(RelativeLayout.ALIGN_TOP, 1 + num)
+            param2.addRule(RelativeLayout.BELOW, 1 + num * 2)
+            param2.addRule(RelativeLayout.ALIGN_LEFT, 1 + num * 2)
+            param2.setMargins(0, 100, 0, 0)
             relativeLayout.addView(imageView1, param2)
         }
         val title = TextView(this)

@@ -48,7 +48,7 @@ class BetaActivity : AppCompatActivity() {
     fun createQuestion(relativeLayout: RelativeLayout) {
         var Id: Int = 0 // 使用するテスト問題のID
         var q_list: RealmList<QuestionList>?
-        val mylist: List<Long> = listOf(20,16,19,3,1,5,14,6,9,14)
+        val mylist: List<Long> = listOf(21,16,19,3,1,5,14,7,9,6)
         val myans: List<String> = listOf("紫舌", "紅舌", "淡紅舌", "淡白舌",
                                          "淡白舌", "淡紅舌", "紅舌", "紫舌",
                                          "淡紅舌", "淡白舌", "紫舌", "紅舌",
@@ -226,7 +226,7 @@ class BetaActivity : AppCompatActivity() {
         val user = intent.getStringExtra("ID")
         val alpha = intent.getIntExtra("ALPHA", 0)
         val intent = Intent(this, ReConfusionActivity::class.java)
-        intent.putExtra("BETA", realm.where(Question::class.java).max("question_id")?.toInt())
+        intent.putExtra("BETA", Id)
         intent.putExtra("ID", user)
         intent.putExtra("ALPHA", alpha)
         realm.executeTransaction {

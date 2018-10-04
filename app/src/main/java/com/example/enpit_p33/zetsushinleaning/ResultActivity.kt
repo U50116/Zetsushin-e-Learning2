@@ -124,9 +124,10 @@ class ResultActivity : AppCompatActivity() {
             for (i in Array(q.size, { j -> j })) {
                 Log.d("debug", q[i]!!.question_number.toString())
                 if (q[i]!!.question_number == q_list[num]?.question_number) {
-                    Log.d("debug", q[i]!!.question_number.toString())
+                    Log.d("debug", q[i]!!.question_number.toString()) // テスト問題1の番号
+                    Log.d("debug", "2の問題:" + realm.where(History::class.java).equalTo("question_id", b).findAll()[0]?.result!![i]?.answer) // テスト問題1の番号
                     text2.text = "テスト問題2\n" + realm.where(History::class.java).equalTo("question_id", b).findAll()[0]!!.result[i]?.answer
-                    val f_b = !realm.where(ZetsuImage::class.java).equalTo("image_id", im_n_b).findAll()[0]?.zetsu_color.equals(realm.where(History::class.java).equalTo("question_id", b).findAll()[0]?.result!![i]?.answer)
+                    val f_b = !realm.where(ZetsuImage::class.java).equalTo("image_id", im_n_a).findAll()[0]?.zetsu_color.equals(realm.where(History::class.java).equalTo("question_id", b).findAll()[0]?.result!![i]?.answer)
                     if(f_b){
                         text2.setTextColor(Color.RED)
                         miss_b.add((im_n_b ?: 0))

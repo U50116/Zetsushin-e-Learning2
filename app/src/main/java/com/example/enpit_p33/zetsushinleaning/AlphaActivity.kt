@@ -60,13 +60,12 @@ class AlphaActivity : AppCompatActivity() {
     fun createQuestion(relativeLayout: RelativeLayout, new_flag: Boolean, existence: History?) {
         var Id: Int// 使用するテスト問題のID
         var q_list: RealmList<QuestionList>?
-        val mylist: List<Long> = listOf(1,5,3,9,16,19,6,14,14,20)
+        val mylist: List<Long> = listOf(1,5,3,9,16,19,7,14,6,21)
         val myans: List<String> = listOf("紅舌", "紫舌", "淡白舌", "淡紅舌", "淡紅舌", "淡白舌", "紫舌", "紅舌",
                                           "淡白舌", "淡紅舌", "紅舌", "紫舌", "淡白舌", "淡紅舌", "紫舌", "紅舌",
                                           "紫舌", "紅舌", "淡白舌", "淡紅舌", "淡紅舌", "淡白舌", "紅舌", "紫舌",
                                           "淡紅舌", "紅舌", "紫舌", "淡白舌", "紅舌", "淡紅舌", "淡白舌", "紫舌",
                                           "淡紅舌", "淡白舌", "紫舌", "紅舌", "紅舌", "淡紅舌", "淡白舌", "紫舌")
-
 
         // テスト問題の指定
         if(new_flag){
@@ -266,7 +265,7 @@ class AlphaActivity : AppCompatActivity() {
         val nextId = (realm.where(History::class.java).max("history_id")?.toLong() ?: 0L) + 1
         val user = intent.getStringExtra("ID")
         val intent = Intent(this, ConfusionActivity::class.java)
-        intent.putExtra("ALPHA", realm.where(Question::class.java).max("question_id")?.toInt())
+        intent.putExtra("ALPHA", Id)
         intent.putExtra("ID", user)
         realm.executeTransaction{
             realm.createObject<History>(nextId).apply {
