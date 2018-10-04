@@ -8,6 +8,7 @@ import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.ViewGroup
 import android.widget.*
 import io.realm.Realm
@@ -17,6 +18,9 @@ import java.util.*
 import android.widget.RadioButton
 import io.realm.RealmList
 import io.realm.RealmResults
+import android.view.KeyEvent.KEYCODE_BACK
+
+
 
 class AlphaActivity : AppCompatActivity() {
     private lateinit var realm: Realm
@@ -61,11 +65,16 @@ class AlphaActivity : AppCompatActivity() {
         var Id: Int// 使用するテスト問題のID
         var q_list: RealmList<QuestionList>?
         val mylist: List<Long> = listOf(1,5,3,9,16,19,7,14,6,21)
-        val myans: List<String> = listOf("紅舌", "紫舌", "淡白舌", "淡紅舌", "淡紅舌", "淡白舌", "紫舌", "紅舌",
-                                          "淡白舌", "淡紅舌", "紅舌", "紫舌", "淡白舌", "淡紅舌", "紫舌", "紅舌",
-                                          "紫舌", "紅舌", "淡白舌", "淡紅舌", "淡紅舌", "淡白舌", "紅舌", "紫舌",
-                                          "淡紅舌", "紅舌", "紫舌", "淡白舌", "紅舌", "淡紅舌", "淡白舌", "紫舌",
-                                          "淡紅舌", "淡白舌", "紫舌", "紅舌", "紅舌", "淡紅舌", "淡白舌", "紫舌")
+        val myans: List<String> = listOf("紅舌", "紫舌", "淡白舌", "淡紅舌",
+                                         "淡紅舌", "淡白舌", "紫舌", "紅舌",
+                                         "淡白舌", "淡紅舌", "紅舌", "紫舌",
+                                         "淡白舌", "淡紅舌", "紫舌", "紅舌",
+                                         "紫舌", "紅舌", "淡白舌", "淡紅舌",
+                                         "淡紅舌", "淡白舌", "紅舌", "紫舌",
+                                         "淡紅舌", "紅舌", "紫舌", "淡白舌",
+                                         "紅舌", "淡紅舌", "淡白舌", "紫舌",
+                                         "淡紅舌", "淡白舌", "紫舌", "紅舌",
+                                         "紅舌", "淡紅舌", "淡白舌", "紫舌")
 
         // テスト問題の指定
         if(new_flag){
@@ -87,7 +96,7 @@ class AlphaActivity : AppCompatActivity() {
             if (num == 0) {
                 param1.addRule(RelativeLayout.ALIGN_PARENT_LEFT)
                 param1.addRule(RelativeLayout.ALIGN_PARENT_TOP)
-                param1.setMargins(50, 350, 0, 0)
+                param1.setMargins(50, 150, 0, 0)
             } else {
                 param1.addRule(RelativeLayout.BELOW, 1 + (num - 1) * 3)
                 param1.addRule(RelativeLayout.ALIGN_LEFT, 1 + (num - 1) * 3)
@@ -274,6 +283,7 @@ class AlphaActivity : AppCompatActivity() {
                 for(i in answerlist.indices){
                     val a = realm.createObject<Result>().apply {
                         answer = answerlist[i]
+                        Log.d("debug", "解答" + answerlist[i])
                     }
                     result.add(a)
                 }
@@ -282,6 +292,16 @@ class AlphaActivity : AppCompatActivity() {
         }
         Log.d("debug", realm.where(QuestionList::class.java).findAll().size.toString())
         startActivity(intent)
+    }
+
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        if (event.getAction() === KeyEvent.ACTION_DOWN) {
+            when (event.getKeyCode()) {
+                KeyEvent.KEYCODE_BACK ->
+                    return true
+            }
+        }
+        return super.dispatchKeyEvent(event)
     }
 
     override fun onDestroy() {

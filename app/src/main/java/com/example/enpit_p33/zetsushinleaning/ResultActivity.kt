@@ -9,6 +9,7 @@ import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.ViewGroup
 import android.widget.*
 import io.realm.Realm
@@ -83,7 +84,7 @@ class ResultActivity : AppCompatActivity() {
             if (num == 0) {
                 param1.addRule(RelativeLayout.ALIGN_PARENT_LEFT)
                 param1.addRule(RelativeLayout.ALIGN_PARENT_TOP)
-                param1.setMargins(50, 350, 0, 0)
+                param1.setMargins(50, 150, 0, 0)
             } else {
                 param1.addRule(RelativeLayout.BELOW, 1 + (num - 1))
                 param1.addRule(RelativeLayout.ALIGN_LEFT, 1 + (num - 1))
@@ -98,7 +99,7 @@ class ResultActivity : AppCompatActivity() {
             text.textSize = 32.0f
             param.addRule(RelativeLayout.ABOVE, 1 + num)
             param.addRule(RelativeLayout.ALIGN_LEFT, 1 + num)
-            param.setMargins(100, 0, 0, -250)
+            param.setMargins(50, 0, 0, -250)
             relativeLayout.addView(text, param)
 
             // テキスト
@@ -130,7 +131,7 @@ class ResultActivity : AppCompatActivity() {
                     val f_b = !realm.where(ZetsuImage::class.java).equalTo("image_id", im_n_a).findAll()[0]?.zetsu_color.equals(realm.where(History::class.java).equalTo("question_id", b).findAll()[0]?.result!![i]?.answer)
                     if(f_b){
                         text2.setTextColor(Color.RED)
-                        miss_b.add((im_n_b ?: 0))
+                        miss_b.add((im_n_a ?: 0))
                         miss_ans_b.add((realm.where(History::class.java).equalTo("question_id", b).findAll()[0]!!.result[i]?.answer ?: ""))
                     }else{
                     }
@@ -174,8 +175,9 @@ class ResultActivity : AppCompatActivity() {
         param5.setMargins(500, 300, 0, 100)
         relativeLayout.addView(button, param5)
 
+        Log.d("debug", "ミスサイズ:" + miss_a.toString() + "  " + miss_b.toString())
         if(miss_a.size or miss_b.size != 0) {
-            for (i in Array(miss_b.size, { i -> i })) {
+            for (i in Array(miss_a.size, { i -> i })) {
                 for (j in Array(miss_b.size, { i -> i })) {
                     if (miss_a[i] == miss_b[j]) {
                         if(miss_ans_a[i] == miss_ans_b[j]){
@@ -200,6 +202,16 @@ class ResultActivity : AppCompatActivity() {
         intent.putExtra("MISS", miss.toLongArray())
         intent.putExtra("MISS_ANS", miss_ans.toTypedArray())
         startActivity(intent)
+    }
+
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        if (event.getAction() === KeyEvent.ACTION_DOWN) {
+            when (event.getKeyCode()) {
+                KeyEvent.KEYCODE_BACK ->
+                    return true
+            }
+        }
+        return super.dispatchKeyEvent(event)
     }
 
     override fun onDestroy() {

@@ -3,6 +3,7 @@ package com.example.enpit_p33.zetsushinleaning
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.View
 import io.realm.Realm
 import io.realm.RealmConfiguration
@@ -108,5 +109,19 @@ class ReConfusionActivity : AppCompatActivity() {
         intent.putExtra("BETA", beta)
         intent.putExtra("ID", user)
         startActivity(intent)
+    }
+
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        if (event.getAction() === KeyEvent.ACTION_DOWN) {
+            when (event.getKeyCode()) {
+                KeyEvent.KEYCODE_BACK ->
+                    return true
+            }
+        }
+        return super.dispatchKeyEvent(event)
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        realm.close()
     }
 }

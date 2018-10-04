@@ -34,9 +34,12 @@
         <activity
             android:name=".ReConfusionActivity"
             android:screenOrientation="landscape" />
-        <activity android:name=".ConfusionActivity" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".CommentActivity"></activity>
+        <activity android:name=".ConfusionActivity"
+            android:screenOrientation="landscape"/>
+        <activity android:name=".MainActivity"
+            android:screenOrientation="landscape"/>
+        <activity android:name=".CommentActivity"
+            android:screenOrientation="landscape"></activity>
     </application>
 
 </manifest>

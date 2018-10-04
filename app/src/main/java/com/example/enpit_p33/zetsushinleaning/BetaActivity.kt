@@ -8,6 +8,7 @@ import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.ViewGroup
 import android.widget.*
 import io.realm.Realm
@@ -75,7 +76,7 @@ class BetaActivity : AppCompatActivity() {
             if (num == 0) {
                 param1.addRule(RelativeLayout.ALIGN_PARENT_LEFT)
                 param1.addRule(RelativeLayout.ALIGN_PARENT_TOP)
-                param1.setMargins(50, 350, 0, 0)
+                param1.setMargins(50, 150, 0, 0)
             } else {
                 param1.addRule(RelativeLayout.BELOW, 1 + (num - 1) * 3)
                 param1.addRule(RelativeLayout.ALIGN_LEFT, 1 + (num - 1) * 3)
@@ -246,6 +247,16 @@ class BetaActivity : AppCompatActivity() {
             Log.d("debug", "alpha_id:" + intent.getIntExtra("ALPHA", 0).toString())
             startActivity(intent)
         }
+    }
+
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        if (event.getAction() === KeyEvent.ACTION_DOWN) {
+            when (event.getKeyCode()) {
+                KeyEvent.KEYCODE_BACK ->
+                    return true
+            }
+        }
+        return super.dispatchKeyEvent(event)
     }
 
     override fun onDestroy() {

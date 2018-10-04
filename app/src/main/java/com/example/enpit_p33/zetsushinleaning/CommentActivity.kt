@@ -7,6 +7,7 @@ import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
@@ -57,10 +58,10 @@ class CommentActivity : AppCompatActivity() {
             if (num == 0) {
                 param1.addRule(RelativeLayout.ALIGN_PARENT_LEFT)
                 param1.addRule(RelativeLayout.ALIGN_PARENT_TOP)
-                param1.setMargins(50, 350, 0, 0)
+                param1.setMargins(50, 150, 0, 0)
             } else {
-                param1.addRule(RelativeLayout.BELOW, 1 + (num - 1))
-                param1.addRule(RelativeLayout.ALIGN_LEFT, 1 + (num - 1))
+                param1.addRule(RelativeLayout.BELOW, 1 + (num - 1) * 2)
+                param1.addRule(RelativeLayout.ALIGN_LEFT, 1 + (num - 1) * 2)
                 param1.setMargins(0, 250, 0, 0)
             }
             relativeLayout.addView(imageView, param1)
@@ -72,8 +73,8 @@ class CommentActivity : AppCompatActivity() {
             @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH) //エラー回避
             imageView1.id = 2 + num * 2
             val param2 = RelativeLayout.LayoutParams(WC, WC)
-            param2.addRule(RelativeLayout.BELOW, 1 + num * 2)
-            param2.addRule(RelativeLayout.ALIGN_LEFT, 1 + num * 2)
+            param2.addRule(RelativeLayout.ALIGN_TOP, 1 + num * 2)
+            param2.addRule(RelativeLayout.RIGHT_OF, 1 + num * 2)
             param2.setMargins(0, 100, 0, 0)
             relativeLayout.addView(imageView1, param2)
         }
@@ -85,5 +86,20 @@ class CommentActivity : AppCompatActivity() {
         val param = RelativeLayout.LayoutParams(WC, WC)
         param.addRule(RelativeLayout.CENTER_HORIZONTAL)
         relativeLayout.addView(title, param)
+    }
+
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        if (event.getAction() === KeyEvent.ACTION_DOWN) {
+            when (event.getKeyCode()) {
+                KeyEvent.KEYCODE_BACK ->
+                    return true
+            }
+        }
+        return super.dispatchKeyEvent(event)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        realm.close()
     }
 }
