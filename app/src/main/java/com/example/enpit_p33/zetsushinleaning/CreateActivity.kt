@@ -16,7 +16,9 @@ class CreateActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create)
         val realmConfig = RealmConfiguration.Builder()
+                .name("zetsushinleaning.realm")
                 .deleteRealmIfMigrationNeeded()
+                .schemaVersion(0)
                 .build()
         realm = Realm.getInstance(realmConfig)
         create_button.setOnClickListener{ create() }

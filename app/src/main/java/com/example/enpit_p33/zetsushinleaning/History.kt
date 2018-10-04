@@ -7,8 +7,9 @@ import io.realm.annotations.PrimaryKey
 open class History: RealmObject(){
     @PrimaryKey
     var history_id: Long = 0
+    var user_id: String = ""
     var date: String = ""
-    var question_id: Long = 0
+    var question_id: Int = 0
     var result: RealmList<Result> = RealmList()
 }
 
@@ -18,7 +19,7 @@ open class Result: RealmObject(){
 
 open class Question: RealmObject(){
     @PrimaryKey
-    var question_id: Long = 0
+    var question_id: Int = 0
     var questions: RealmList<QuestionList> = RealmList()
 }
 

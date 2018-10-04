@@ -1,6 +1,7 @@
 package com.example.enpit_p33.zetsushinleaning
 
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import io.realm.Realm
@@ -16,7 +17,9 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         val realmConfig = RealmConfiguration.Builder()
+                .name("zetsushinleaning.realm")
                 .deleteRealmIfMigrationNeeded()
+                .schemaVersion(0)
                 .build()
         realm = Realm.getInstance(realmConfig)
         button.setOnClickListener{ onNextButtonTapped()}
@@ -24,7 +27,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun onNextButtonTapped(){
-        val intent = Intent(this, AlphaActivity::class.java)
+        val intent = Intent(this, MainActivity::class.java)
 
         val id = user_id.text.toString()
         val pass = user_password.text.toString()
@@ -36,14 +39,13 @@ class LoginActivity : AppCompatActivity() {
                 realm.executeTransaction{
                     if (pass.equals(user_account.password)) {
                         intent.putExtra("ID", id)
-                        intent.putExtra("PASSWORD", pass)
 
                         startActivity(intent)
                     } else {
-                        alert("IDかパスワードが違います") {yesButton {  }}.show()
+                        alert("パスワードが違います") {yesButton {  }}.show()
                     }}
             } else {
-                alert("IDかパスワードが違います") {yesButton {  }}.show()
+                alert("IDが違います") {yesButton {  }}.show()
             }
         }catch (e: IllegalStateException){
             alert("エラーが起きました"){yesButton {  }}.show()

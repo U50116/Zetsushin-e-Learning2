@@ -1,11 +1,13 @@
 package com.example.enpit_p33.zetsushinleaning
 
 import android.app.Application
-import android.preference.PreferenceManager
+import android.text.format.DateFormat
 import android.util.Log
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import io.realm.kotlin.createObject
+import java.text.ParseException
+import java.text.SimpleDateFormat
 import java.util.*
 
 class ZetsushinApplication : Application(){
@@ -20,15 +22,13 @@ class ZetsushinApplication : Application(){
 
         Realm.init(this)
 
-        //realm.where(History::class.java).findAll().deleteAllFromRealm()
-        //realm.where(Zetsushin::class.java).findAll().deleteAllFromRealm()
-        //realm.where(Question::class.java).findAll().deleteAllFromRealm()
-
         saveDate()
 
         Log.d("debug", "History: " + realm.where(History::class.java).findAll().size.toString())
         Log.d("debug", "Zetsushin: " + realm.where(Zetsushin::class.java).findAll().size.toString())
         Log.d("debug", "Question: " + realm.where(Question::class.java).findAll().size.toString())
+        Log.d("debug", "QuestionList: " + realm.where(QuestionList::class.java).findAll().size.toString())
+        Log.d("debug", "Result: " + realm.where(Result::class.java).findAll().size.toString())
         Log.d("debug", "ZetsuImage: " + realm.where(ZetsuImage::class.java).findAll().size.toString())
         Log.d("debug", "ZetsuImage_size: " + image.size.toString())
     }
@@ -41,14 +41,18 @@ class ZetsushinApplication : Application(){
         realm = Realm.getInstance(realmConfig)
 
         realm.executeTransaction {
-            val delete = realm.where(ZetsuImage::class.java).findAll()
-            delete.deleteAllFromRealm()
+            realm.where(ZetsuImage::class.java).findAll().deleteAllFromRealm()
+            //realm.where(Zetsushin::class.java).findAll().deleteAllFromRealm()
+            realm.where(QuestionList::class.java).findAll().deleteAllFromRealm()
+            realm.where(Question::class.java).findAll().deleteAllFromRealm()
+            realm.where(Result::class.java).findAll().deleteAllFromRealm()
+            realm.where(History::class.java).findAll().deleteAllFromRealm()
             for(j in Array(image.size+1, { i -> i })){
                 if(image[j + 1] != null){
                     realm.createObject<ZetsuImage>(j + 1).apply {
                         zetsu_color = (image[j + 1] ?: "")
                     }
-                }else{}
+                }
             }
         }
     }
