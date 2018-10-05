@@ -3,11 +3,14 @@ package com.example.enpit_p33.zetsushinleaning
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.Typeface
+import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.KeyEvent
 import android.view.ViewGroup
 import android.widget.*
@@ -43,8 +46,9 @@ class AlphaActivity : AppCompatActivity() {
         //レイアウト設定
         val scrollView = ScrollView(this)
         setContentView(scrollView)
-        val relativeLayout = RelativeLayout(this)
-        scrollView.addView(relativeLayout)
+        val linearLayout = LinearLayout(this)
+        linearLayout.orientation = LinearLayout.VERTICAL
+        scrollView.addView(linearLayout)
 
         val new_flag: Boolean
         val his = (realm.where(History::class.java).equalTo("user_id", intent.getStringExtra("ID"))
@@ -57,131 +61,126 @@ class AlphaActivity : AppCompatActivity() {
         }else{
             new_flag = false
         }
-        createQuestion(relativeLayout, new_flag, existence)
+        createQuestion(linearLayout, new_flag, existence)
     }
 
     @SuppressLint("ResourceType")
-    fun createQuestion(relativeLayout: RelativeLayout, new_flag: Boolean, existence: History?) {
+    fun createQuestion(linearLayout: LinearLayout, new_flag: Boolean, existence: History?) {
         var Id: Int// 使用するテスト問題のID
         var q_list: RealmList<QuestionList>?
-        val mylist: List<Long> = listOf(1,5,3,9,16,19,7,14,6,21)
+        val mylist: List<Long> = listOf(1, 5, 3, 9, 16, 19, 7, 14, 6, 21)
         val myans: List<String> = listOf("紅舌", "紫舌", "淡白舌", "淡紅舌",
-                                         "淡紅舌", "淡白舌", "紫舌", "紅舌",
-                                         "淡白舌", "淡紅舌", "紅舌", "紫舌",
-                                         "淡白舌", "淡紅舌", "紫舌", "紅舌",
-                                         "紫舌", "紅舌", "淡白舌", "淡紅舌",
-                                         "淡紅舌", "淡白舌", "紅舌", "紫舌",
-                                         "淡紅舌", "紅舌", "紫舌", "淡白舌",
-                                         "紅舌", "淡紅舌", "淡白舌", "紫舌",
-                                         "淡紅舌", "淡白舌", "紫舌", "紅舌",
-                                         "紅舌", "淡紅舌", "淡白舌", "紫舌")
+                "淡紅舌", "淡白舌", "紫舌", "紅舌",
+                "淡白舌", "淡紅舌", "紅舌", "紫舌",
+                "淡白舌", "淡紅舌", "紫舌", "紅舌",
+                "紫舌", "紅舌", "淡白舌", "淡紅舌",
+                "淡紅舌", "淡白舌", "紅舌", "紫舌",
+                "淡紅舌", "紅舌", "紫舌", "淡白舌",
+                "紅舌", "淡紅舌", "淡白舌", "紫舌",
+                "淡紅舌", "淡白舌", "紫舌", "紅舌",
+                "紅舌", "淡紅舌", "淡白舌", "紫舌")
 
         // テスト問題の指定
-        if(new_flag){
+        if (new_flag) {
             Id = myQuestion(mylist, myans)// newQuestion()
             q_list = realm.where(Question::class.java).equalTo("question_id", Id).findAll()[0]?.questions
-        }else{
+        } else {
             Id = randomQuestion((existence?.question_id ?: 0))
             q_list = realm.where(Question::class.java).equalTo("question_id", Id).findAll()[0]?.questions
         }
 
+        val param = LinearLayout.LayoutParams(WC, WC)
+        val back = GradientDrawable()
+        back.setStroke(3, Color.BLACK)
+
+        val inlinearLayout_1 = LinearLayout(this)
+        inlinearLayout_1.orientation = LinearLayout.HORIZONTAL
+
+        val title = TextView(this)
+        title.text = "テスト問題1"
+        title.setTypeface(Typeface.create(Typeface.SERIF, Typeface.BOLD_ITALIC))
+        title.textSize = 64.0f
+        if (title.parent != null) {
+            ((title.parent) as ViewGroup).removeView(title)
+        }
+        inlinearLayout_1.addView(title, param)
+        linearLayout.addView(inlinearLayout_1, param)
+
         for (num in Array(Q_SIZE, { i -> i })) {
-            // 画像作成
-            val r = resources.getIdentifier("q" + q_list!![num]?.image_number + "_image", "drawable", packageName) //drawableの画像指定
-            val imageView = ImageView(this)
-            imageView.setImageResource(r) //imageViewに画像設定
-            @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH) //エラー回避
-            imageView.id = 1 + num * 3
-            val param1 = RelativeLayout.LayoutParams(WC, WC)
-            if (num == 0) {
-                param1.addRule(RelativeLayout.ALIGN_PARENT_LEFT)
-                param1.addRule(RelativeLayout.ALIGN_PARENT_TOP)
-                param1.setMargins(50, 150, 0, 0)
-            } else {
-                param1.addRule(RelativeLayout.BELOW, 1 + (num - 1) * 3)
-                param1.addRule(RelativeLayout.ALIGN_LEFT, 1 + (num - 1) * 3)
-                param1.setMargins(0, 250, 0, 0)
-            }
-            relativeLayout.addView(imageView, param1)
 
+            val inlinearLayout_2 = LinearLayout(this)
+            inlinearLayout_2.orientation = LinearLayout.HORIZONTAL
 
-            // ラジオ作成
+            val text = TextView(this)
+            text.text = "問" + (num+1).toString()
+            text.textSize = 32.0f
+            inlinearLayout_2.addView(text, param)
+
+            val inlinearLayout_3 = LinearLayout(this)
+            inlinearLayout_3.orientation = LinearLayout.HORIZONTAL
+
+            val r_1 = resources.getIdentifier("q" + q_list!![num]?.image_number + "_image", "drawable", packageName) //drawableの画像指定
+            val imageView_1 = ImageView(this)
+            imageView_1.setImageResource(r_1) //imageViewに画像設定
+            imageView_1.setPadding(0,50,200,50)
+            inlinearLayout_3.addView(imageView_1, param)
+
             val radioGroup = RadioGroup(this)
-            @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-            radioGroup.id = 2 + num * 3
             val radioButton1 = RadioButton(this)
             val radioButton2 = RadioButton(this)
             val radioButton3 = RadioButton(this)
             val radioButton4 = RadioButton(this)
-            @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-            radioButton1.id = 1000 + num * 4
             radioButton1.text = q_list[num]?.choice1
             radioButton1.textSize = 32.0f
-            @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-            radioButton2.id = 1001 + num * 4
             radioButton2.text = q_list[num]?.choice2
             radioButton2.textSize = 32.0f
-            @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-            radioButton3.id = 1002 + num * 4
             radioButton3.text = q_list[num]?.choice3
             radioButton3.textSize = 32.0f
-            @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-            radioButton4.id = 1003 + num * 4
             radioButton4.text = q_list[num]?.choice4
             radioButton4.textSize = 32.0f
-            val param3 = RelativeLayout.LayoutParams(WC, WC)
-            param3.setMargins(0, 50, 0, 0)
-            radioGroup.addView(radioButton1, param3)
-            radioGroup.addView(radioButton2, param3)
-            radioGroup.addView(radioButton3, param3)
-            radioGroup.addView(radioButton4, param3)
-            val param2 = RelativeLayout.LayoutParams(WC, WC)
-            param2.addRule(RelativeLayout.RIGHT_OF, 1 + num * 3)
-            param2.addRule(RelativeLayout.ALIGN_TOP, 1 + num * 3)
-            param2.setMargins(100, 50, 0, 0)
-            relativeLayout.addView(radioGroup, param2)
+            radioGroup.addView(radioButton1, param)
+            radioGroup.addView(radioButton2, param)
+            radioGroup.addView(radioButton3, param)
+            radioGroup.addView(radioButton4, param)
+            radioGroup.setPadding(0,50,0,50)
+            inlinearLayout_3.addView(radioGroup, param)
             // ラジオボタンタップ時
-            radioGroup.setOnCheckedChangeListener(object: RadioGroup.OnCheckedChangeListener {
+            radioGroup.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
                 override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
                     val radio = findViewById(checkedId) as RadioButton
-                    if(radio.isChecked() == true){
+                    if (radio.isChecked() == true)
                         answerlist[num] = radio.text.toString()
-                        Log.d("debug", answerlist[num])
-                    }
+                    Log.d("debug", answerlist[num])
                 }
             })
-            val text = TextView(this)
-            text.id = 3 + num * 3
-            val param4 = RelativeLayout.LayoutParams(WC, WC)
-            text.text = "問" + (num+1).toString()
-            text.textSize = 32.0f
-            param4.addRule(RelativeLayout.ALIGN_TOP, 1 + num * 3)
-            param4.addRule(RelativeLayout.ALIGN_LEFT, 1 + num * 3)
-            param4.setMargins(50, -70, 0, 0)
-            relativeLayout.addView(text, param4)
 
+            linearLayout.addView(inlinearLayout_2, param)
+            linearLayout.addView(inlinearLayout_3, param)
         }
 
-        val title = TextView(this)
-        title.id = 10001
-        title.text = "テスト問題1"
-        title.setTypeface(Typeface.create(Typeface.SERIF, Typeface.BOLD_ITALIC))
-        title.textSize = 64.0f
-        val param = RelativeLayout.LayoutParams(WC, WC)
-        param.addRule(RelativeLayout.CENTER_HORIZONTAL)
-        relativeLayout.addView(title, param)
+        val inlinearLayout_4 = LinearLayout(this)
+        inlinearLayout_4.orientation = LinearLayout.HORIZONTAL
 
-        // ボタン作成
+        val space_1 = Space(this)
+        inlinearLayout_4.addView(space_1, LinearLayout.LayoutParams(500, 100))
+
         val button = Button(this)
-        button.id = 10000
-        val param3 = RelativeLayout.LayoutParams(500, 200)
         button.text = "次へ"
         button.textSize = 32.0f
-        param3.addRule(RelativeLayout.BELOW, Q_SIZE * 3 - 2)
-        param3.setMargins(500, 300, 0, 100)
-        relativeLayout.addView(button, param3)
+        button.gravity = Gravity.CENTER
+        inlinearLayout_4.addView(button, LinearLayout.LayoutParams(300, 100))
+
+
+        val inlinearLayout_5 = LinearLayout(this)
+        inlinearLayout_5.orientation = LinearLayout.HORIZONTAL
+
+        val space_2 = Space(this)
+        inlinearLayout_5.addView(space_2, LinearLayout.LayoutParams(100, 200))
+
         // ボタンタップ時
-        button.setOnClickListener{onButtonTapped(Id)}
+        button.setOnClickListener { onButtonTapped(Id) }
+        linearLayout.addView(inlinearLayout_4, param)
+        linearLayout.addView(inlinearLayout_5, param)
     }
 
     fun newQuestion(): Int {
