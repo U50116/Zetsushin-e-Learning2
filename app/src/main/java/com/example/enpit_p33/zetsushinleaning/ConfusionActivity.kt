@@ -39,26 +39,26 @@ class ConfusionActivity : AppCompatActivity() {
 
 
         for (num in x.indices) {    //1~20
-            when(tmp1[0]?.questions!![num]?.image_number?.toInt()){
-                1,10,19 -> when(tmp2[0]?.result!![num]?.answer){
+            when(tmp1[0]?.questions!![num]?.image_number?.substring(0,1)?.toInt()){
+                1 -> when(tmp2[0]?.result!![num]?.answer){
                     "紅舌" -> A_x[0]++
                     "淡紅舌" -> A_x[1]++
                     "淡白舌" -> A_x[2]++
                     "紫舌" -> A_x[3]++
                 }
-                2,5,8,9,13,16,20,21 -> when(tmp2[0]?.result!![num]?.answer) {
+                2 -> when(tmp2[0]?.result!![num]?.answer) {
                     "紅舌" -> B_x[0]++
                     "淡紅舌" -> B_x[1]++
                     "淡白舌" -> B_x[2]++
                     "紫舌" -> B_x[3]++
                 }
-                6,14 -> when(tmp2[0]?.result!![num]?.answer) {
+                3 -> when(tmp2[0]?.result!![num]?.answer) {
                     "紅舌" -> C_x[0]++
                     "淡紅舌" -> C_x[1]++
                     "淡白舌" -> C_x[2]++
                     "紫舌" -> C_x[3]++
                 }
-                3,4,7,11,12,15,17,18 -> when(tmp2[0]?.result!![num]?.answer) {
+                4 -> when(tmp2[0]?.result!![num]?.answer) {
                     "紅舌" -> D_x[0]++
                     "淡紅舌" -> D_x[1]++
                     "淡白舌" -> D_x[2]++

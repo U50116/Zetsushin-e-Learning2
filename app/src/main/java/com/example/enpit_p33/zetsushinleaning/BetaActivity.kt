@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
+import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import io.realm.Realm
@@ -52,7 +53,7 @@ class BetaActivity : AppCompatActivity() {
     fun createQuestion(linearLayout: LinearLayout) {
         var Id: Int = 0 // 使用するテスト問題のID
         var q_list: RealmList<QuestionList>?
-        val mylist: List<Long> = listOf(21,16,19,3,1,5,14,7,9,6)
+        val mylist = listOf("2_8", "2_6", "1_3", "4_1", "1_1", "2_2", "3_1", "4_3", "2_4", "3_3")
         val myans: List<String> = listOf("紫舌", "紅舌", "淡紅舌", "淡白舌",
                                          "淡白舌", "淡紅舌", "紅舌", "紫舌",
                                          "淡紅舌", "淡白舌", "紫舌", "紅舌",
@@ -73,7 +74,7 @@ class BetaActivity : AppCompatActivity() {
         back.setStroke(3, Color.BLACK)
 
         val inlinearLayout_1 = LinearLayout(this)
-        inlinearLayout_1.orientation = LinearLayout.HORIZONTAL
+        inlinearLayout_1.orientation = LinearLayout.VERTICAL
 
         val title = TextView(this)
         title.text = "テスト問題2"
@@ -83,6 +84,16 @@ class BetaActivity : AppCompatActivity() {
             ((title.parent) as ViewGroup).removeView(title)
         }
         inlinearLayout_1.addView(title, param)
+
+        val question_statement = TextView(this)
+        question_statement.text = "前の問題と選択肢をランダムに並び変えています。\n問いに示された舌画像を見て、4つの選択肢の中から正しいと思われる選択肢を1つ選んでください。"
+        question_statement.textSize = 32.0f
+        inlinearLayout_1.addView(question_statement, param)
+
+        val separate_1 = View(this)
+        separate_1.background = back
+        inlinearLayout_1.addView(separate_1, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 5))
+
         linearLayout.addView(inlinearLayout_1, param)
 
         for (num in Array(Q_SIZE, { i -> i })) {
@@ -98,7 +109,7 @@ class BetaActivity : AppCompatActivity() {
             val inlinearLayout_3 = LinearLayout(this)
             inlinearLayout_3.orientation = LinearLayout.HORIZONTAL
 
-            val r_1 = resources.getIdentifier("q" + q_list!![num]?.image_number + "_image", "drawable", packageName) //drawableの画像指定
+            val r_1 = resources.getIdentifier("q" + q_list!![num]?.image_number, "drawable", packageName) //drawableの画像指定
             val imageView_1 = ImageView(this)
             imageView_1.setImageResource(r_1) //imageViewに画像設定
             imageView_1.setPadding(0,50,200,50)
@@ -135,6 +146,10 @@ class BetaActivity : AppCompatActivity() {
 
             linearLayout.addView(inlinearLayout_2, param)
             linearLayout.addView(inlinearLayout_3, param)
+
+            val separate_2 = View(this)
+            separate_2.background = back
+            linearLayout.addView(separate_2, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 5))
         }
 
         val inlinearLayout_4 = LinearLayout(this)
@@ -154,13 +169,14 @@ class BetaActivity : AppCompatActivity() {
         inlinearLayout_5.orientation = LinearLayout.HORIZONTAL
 
         val space_2 = Space(this)
-        inlinearLayout_5.addView(space_2, LinearLayout.LayoutParams(100, 200))
+        inlinearLayout_5.addView(space_2, LinearLayout.LayoutParams(100, 100))
 
         // ボタンタップ時
         button.setOnClickListener { onButtonTapped(Id) }
         linearLayout.addView(inlinearLayout_4, param)
         linearLayout.addView(inlinearLayout_5, param)
     }
+/*
 
     fun randomQuestion(Id: Int): Int {
         // テスト問題の一番大きいIDの次の数字を取得
@@ -192,20 +208,21 @@ class BetaActivity : AppCompatActivity() {
         }
         return nextId
     }
-
-    fun myQuestion(mylist: List<Long>, myans: List<String>): Int {
+*/
+    fun myQuestion(mylist: List<String>, myans: List<String>): Int {
         // テスト問題の一番大きいIDの次の数字を取得
         val maxId = realm.where(Question::class.java).max("question_id")
         val nextId = (maxId?.toInt() ?: 0) + 1
-
-        val number = listOf(10,5,6,3,1,2,8,7,4,9) // 緊急用　後で変更
+        // val alphaId = realm.where(History::class.java).equalTo("history_id", intent.getIntExtra("ALPHA", 0).toLong()).findFirst()?.question_id
+        // val numbers = realm.where(Question::class.java).equalTo("question_id", alphaId).findFirst()?.questions
+        val numbers = listOf(10,5,6,3,1,2,8,7,4,9)
 
         //新しい問題を生成
         realm.executeTransaction {
             realm.createObject<Question>(nextId).apply {
                 for (num in Array(Q_SIZE, { i -> i })) {
                     val q = realm.createObject<QuestionList>().apply {
-                        question_number = number[num] // 緊急用　後で変更
+                        question_number = numbers[num]
                         image_number = mylist[num]
                         choice1 = myans[0 + num * 4]
                         choice2 = myans[1 + num * 4]

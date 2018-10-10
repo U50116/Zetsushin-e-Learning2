@@ -12,14 +12,10 @@ import java.util.*
 
 class ZetsushinApplication : Application(){
     private lateinit var realm: Realm
-    val image = mapOf(1 to "紅舌", 2 to "淡紅舌", 3 to "紫舌", 4 to "紫舌", 5 to "淡紅舌",
-            6 to "淡白舌",7 to "紫舌", 8 to "淡紅舌", 9 to "淡紅舌", 10 to "紅舌", 11 to "紫舌",
-            12 to "紫舌", 13 to "淡紅舌", 14 to "淡白舌", 15 to "紫舌", 16 to "淡紅舌",
-            17 to "紫舌", 18 to "紫舌", 19 to "紅舌", 20 to "淡紅舌", 21 to "淡紅舌")
 
-    val imagelist = listOf("1-1", "1-2", "1-3", "2-1", "2-2", "2-3", "2-4", "2-5",
-                           "2-6", "2-7", "2-8", "3-1", "3-3", "4-1", "4-2", "4-3",
-                           "4-4", "4-5", "4-6", "4-7", "4-8")
+    val image = listOf("1_1", "1_2", "1_3", "2_1", "2_2", "2_3", "2_4", "2_5",
+                           "2_6", "2_7", "2_8", "3_1", "3_3", "4_1", "4_2", "4_3",
+                           "4_4", "4_5", "4_6", "4_7", "4_8")
 
     override fun onCreate(){
         super.onCreate()
@@ -59,11 +55,9 @@ class ZetsushinApplication : Application(){
             realm.where(Question::class.java).findAll().deleteAllFromRealm()
             realm.where(Result::class.java).findAll().deleteAllFromRealm()
             realm.where(History::class.java).findAll().deleteAllFromRealm()
-            for(j in Array(image.size+1, { i -> i })){
-                if(image[j + 1] != null){
-                    realm.createObject<ZetsuImage>(j + 1).apply {
-                        zetsu_color = (image[j + 1] ?: "")
-                    }
+            for(j in Array(image.size, { i -> i })){
+                    realm.createObject<ZetsuImage>(j).apply {
+                        image_number = image[j]
                 }
             }
         }

@@ -25,7 +25,7 @@ open class Question: RealmObject(){
 
 open class QuestionList: RealmObject(){
     var question_number: Int = 0
-    var image_number: Long = 0
+    var image_number: String = ""
     var choice1: String = ""
     var choice2: String = ""
     var choice3: String = ""

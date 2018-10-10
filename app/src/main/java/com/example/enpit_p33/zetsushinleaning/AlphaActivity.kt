@@ -22,7 +22,7 @@ import android.widget.RadioButton
 import io.realm.RealmList
 import io.realm.RealmResults
 import android.view.KeyEvent.KEYCODE_BACK
-
+import android.view.View
 
 
 class AlphaActivity : AppCompatActivity() {
@@ -68,7 +68,7 @@ class AlphaActivity : AppCompatActivity() {
     fun createQuestion(linearLayout: LinearLayout, new_flag: Boolean, existence: History?) {
         var Id: Int// 使用するテスト問題のID
         var q_list: RealmList<QuestionList>?
-        val mylist: List<Long> = listOf(1, 5, 3, 9, 16, 19, 7, 14, 6, 21)
+        val mylist= listOf("1_1", "2_2", "4_1", "2_4", "2_6", "1_3", "4_3", "3_1", "3_3", "2_8")
         val myans: List<String> = listOf("紅舌", "紫舌", "淡白舌", "淡紅舌",
                 "淡紅舌", "淡白舌", "紫舌", "紅舌",
                 "淡白舌", "淡紅舌", "紅舌", "紫舌",
@@ -85,7 +85,7 @@ class AlphaActivity : AppCompatActivity() {
             Id = myQuestion(mylist, myans)// newQuestion()
             q_list = realm.where(Question::class.java).equalTo("question_id", Id).findAll()[0]?.questions
         } else {
-            Id = randomQuestion((existence?.question_id ?: 0))
+            Id = realm.where(Question::class.java).max("question_id")!!.toInt()
             q_list = realm.where(Question::class.java).equalTo("question_id", Id).findAll()[0]?.questions
         }
 
@@ -94,7 +94,7 @@ class AlphaActivity : AppCompatActivity() {
         back.setStroke(3, Color.BLACK)
 
         val inlinearLayout_1 = LinearLayout(this)
-        inlinearLayout_1.orientation = LinearLayout.HORIZONTAL
+        inlinearLayout_1.orientation = LinearLayout.VERTICAL
 
         val title = TextView(this)
         title.text = "テスト問題1"
@@ -104,6 +104,16 @@ class AlphaActivity : AppCompatActivity() {
             ((title.parent) as ViewGroup).removeView(title)
         }
         inlinearLayout_1.addView(title, param)
+
+        val question_statement = TextView(this)
+        question_statement.text = "問いに示された舌画像を見て、4つの選択肢の中から正しいと思われる選択肢を1つ選んでください。"
+        question_statement.textSize = 32.0f
+        inlinearLayout_1.addView(question_statement, param)
+
+        val separate_1 = View(this)
+        separate_1.background = back
+        inlinearLayout_1.addView(separate_1, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 5))
+
         linearLayout.addView(inlinearLayout_1, param)
 
         for (num in Array(Q_SIZE, { i -> i })) {
@@ -119,7 +129,7 @@ class AlphaActivity : AppCompatActivity() {
             val inlinearLayout_3 = LinearLayout(this)
             inlinearLayout_3.orientation = LinearLayout.HORIZONTAL
 
-            val r_1 = resources.getIdentifier("q" + q_list!![num]?.image_number + "_image", "drawable", packageName) //drawableの画像指定
+            val r_1 = resources.getIdentifier("q" + q_list!![num]?.image_number, "drawable", packageName) //drawableの画像指定
             val imageView_1 = ImageView(this)
             imageView_1.setImageResource(r_1) //imageViewに画像設定
             imageView_1.setPadding(0,50,200,50)
@@ -144,6 +154,7 @@ class AlphaActivity : AppCompatActivity() {
             radioGroup.addView(radioButton4, param)
             radioGroup.setPadding(0,50,0,50)
             inlinearLayout_3.addView(radioGroup, param)
+
             // ラジオボタンタップ時
             radioGroup.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
                 override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
@@ -156,6 +167,10 @@ class AlphaActivity : AppCompatActivity() {
 
             linearLayout.addView(inlinearLayout_2, param)
             linearLayout.addView(inlinearLayout_3, param)
+
+            val separate_2 = View(this)
+            separate_2.background = back
+            linearLayout.addView(separate_2, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 5))
         }
 
         val inlinearLayout_4 = LinearLayout(this)
@@ -175,14 +190,14 @@ class AlphaActivity : AppCompatActivity() {
         inlinearLayout_5.orientation = LinearLayout.HORIZONTAL
 
         val space_2 = Space(this)
-        inlinearLayout_5.addView(space_2, LinearLayout.LayoutParams(100, 200))
+        inlinearLayout_5.addView(space_2, LinearLayout.LayoutParams(100, 100))
 
         // ボタンタップ時
         button.setOnClickListener { onButtonTapped(Id) }
         linearLayout.addView(inlinearLayout_4, param)
         linearLayout.addView(inlinearLayout_5, param)
     }
-
+/*
     fun newQuestion(): Int {
         // テスト問題の一番大きいIDの次の数字を取得
         val maxId = realm.where(Question::class.java).max("question_id")
@@ -242,8 +257,8 @@ class AlphaActivity : AppCompatActivity() {
         }
         return nextId
     }
-
-    fun myQuestion(mylist: List<Long>, myans: List<String>): Int {
+*/
+    fun myQuestion(mylist: List<String>, myans: List<String>): Int {
         // テスト問題の一番大きいIDの次の数字を取得
         val maxId = realm.where(Question::class.java).max("question_id")
         val nextId = (maxId?.toInt() ?: 0) + 1

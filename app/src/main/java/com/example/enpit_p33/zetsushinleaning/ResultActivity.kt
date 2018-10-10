@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
+import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import io.realm.Realm
@@ -53,11 +54,12 @@ class ResultActivity : AppCompatActivity() {
     fun resultQuestion(linearLayout: LinearLayout) {
         var Id: Int // 使用するテスト問題のID
         var q_list: RealmList<QuestionList>?
+        val real = listOf("紅舌","淡紅舌","淡白舌","紫舌" )
 
         var flag:MutableList<Int> = mutableListOf()
-        var miss_a:MutableList<Long> = mutableListOf()
-        var miss_b:MutableList<Long> = mutableListOf()
-        var miss: MutableList<Long> = mutableListOf()
+        var miss_a:MutableList<String> = mutableListOf()
+        var miss_b:MutableList<String> = mutableListOf()
+        var miss: MutableList<String> = mutableListOf()
         var miss_ans_a: MutableList<String> = mutableListOf()
         var miss_ans_b: MutableList<String> = mutableListOf()
         var miss_ans: MutableList<String> = mutableListOf()
@@ -76,7 +78,7 @@ class ResultActivity : AppCompatActivity() {
         back.setStroke(3, Color.BLACK)
 
         val inlinearLayout_1 = LinearLayout(this)
-        inlinearLayout_1.orientation = LinearLayout.HORIZONTAL
+        inlinearLayout_1.orientation = LinearLayout.VERTICAL
 
         val title = TextView(this)
         title.text = "テスト結果"
@@ -86,29 +88,42 @@ class ResultActivity : AppCompatActivity() {
             ((title.parent) as ViewGroup).removeView(title)
         }
         inlinearLayout_1.addView(title, param)
+
+        val question_statement = TextView(this)
+        question_statement.text = "正解と選んだ選択肢を見てみましょう。1回目、2回目の間違い個所を確認しましょう。"
+        question_statement.textSize = 32.0f
+        inlinearLayout_1.addView(question_statement, LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT))
+
+        val separate_1 = View(this)
+        separate_1.background = back
+        inlinearLayout_1.addView(separate_1, LinearLayout.LayoutParams(1500, 5))
+
         linearLayout.addView(inlinearLayout_1, param)
 
 
         for(num in Array(Q_SIZE, { i -> i })){
             val im_n_a = realm.where(Question::class.java).equalTo("question_id", a).findAll()[0]?.questions!![num]?.image_number
-            val im_n_b = realm.where(Question::class.java).equalTo("question_id", b).findAll()[0]?.questions!![num]?.image_number
-            val f_a = !realm.where(ZetsuImage::class.java).equalTo("image_id", im_n_a).findAll()[0]?.zetsu_color.equals(realm.where(History::class.java).equalTo("question_id", a).findAll()[0]?.result!![num]?.answer)
+            val a_color = real[realm.where(ZetsuImage::class.java).equalTo("image_number", im_n_a).findAll()[0]?.image_number?.substring(0,1)!!.toInt() - 1]
+            var a_falsehood = !a_color.equals(realm.where(History::class.java).equalTo("question_id", a).findAll()[0]?.result!![num]?.answer)
 
             val inlinearLayout_2 = LinearLayout(this)
-            inlinearLayout_2.orientation = LinearLayout.HORIZONTAL
+            inlinearLayout_2.orientation = LinearLayout.VERTICAL
 
             val q_number = TextView(this)
             q_number.text = "問" + (num+1).toString()
             q_number.textSize = 32.0f
             inlinearLayout_2.addView(q_number, param)
 
+            val space_1 = Space(this)
+            inlinearLayout_2.addView(space_1, LinearLayout.LayoutParams(500, 50))
+
             val inlinearLayout_3 = LinearLayout(this)
             inlinearLayout_3.orientation = LinearLayout.HORIZONTAL
 
-            val r_1 = resources.getIdentifier("q" + q_list!![num]?.image_number + "_image", "drawable", packageName) //drawableの画像指定
+            val r_1 = resources.getIdentifier("q" + q_list!![num]?.image_number, "drawable", packageName) //drawableの画像指定
             val imageView_1 = ImageView(this)
             imageView_1.setImageResource(r_1) //imageViewに画像設定
-            imageView_1.setPadding(0,50,200,50)
+            imageView_1.setPadding(0,0,200,50)
             inlinearLayout_3.addView(imageView_1, param)
 
             val inlinearLayout_4 = LinearLayout(this)
@@ -118,9 +133,9 @@ class ResultActivity : AppCompatActivity() {
             val text_1 = TextView(this)
             text_1.text = "テスト問題1の選択\n" + realm.where(History::class.java).equalTo("question_id", a).findAll()[0]?.result!![num]?.answer
             text_1.textSize = 32.0f
-            if(f_a){
+            if(a_falsehood){
                 text_1.setTextColor(Color.RED)
-                miss_a.add((im_n_a ?: 0))
+                miss_a.add((im_n_a ?: ""))
                 miss_ans_a.add((realm.where(History::class.java).equalTo("question_id", a).findAll()[0]?.result!![num]?.answer ?: ""))
             }
             inlinearLayout_4.addView(text_1, param)
@@ -130,14 +145,15 @@ class ResultActivity : AppCompatActivity() {
             val q = realm.where(Question::class.java).equalTo("question_id", b).findAll()[0]!!.questions
             for (i in Array(q.size, { j -> j })) {
                 Log.d("debug", q[i]!!.question_number.toString())
-                if (q[i]!!.question_number == q_list[num]?.question_number) {
+                if (q[i]!!.question_number.equals(q_list[num]?.question_number)) {
                     Log.d("debug", q[i]!!.question_number.toString()) // テスト問題1の番号
                     Log.d("debug", "2の問題:" + realm.where(History::class.java).equalTo("question_id", b).findAll()[0]?.result!![i]?.answer) // テスト問題1の番号
                     text_2.text = "テスト問題2の選択\n" + realm.where(History::class.java).equalTo("question_id", b).findAll()[0]!!.result[i]?.answer
-                    val f_b = !realm.where(ZetsuImage::class.java).equalTo("image_id", im_n_a).findAll()[0]?.zetsu_color.equals(realm.where(History::class.java).equalTo("question_id", b).findAll()[0]?.result!![i]?.answer)
-                    if(f_b){
+                    val b_color = real[realm.where(ZetsuImage::class.java).equalTo("image_number", im_n_a).findAll()[0]?.image_number?.substring(0,1)!!.toInt() - 1]
+                    val b_falsehood = !b_color.equals(realm.where(History::class.java).equalTo("question_id", b).findAll()[0]?.result!![i]?.answer)
+                    if(b_falsehood){
                         text_2.setTextColor(Color.RED)
-                        miss_b.add((im_n_a ?: 0))
+                        miss_b.add((im_n_a ?: ""))
                         miss_ans_b.add((realm.where(History::class.java).equalTo("question_id", b).findAll()[0]!!.result[i]?.answer ?: ""))
                     }else{
                     }
@@ -146,7 +162,7 @@ class ResultActivity : AppCompatActivity() {
             inlinearLayout_4.addView(text_2, param)
 
             val text_3 = TextView(this)
-            text_3.text = "この舌画像の正解\n" + realm.where(ZetsuImage::class.java).equalTo("image_id", im_n_a).findAll()[0]?.zetsu_color
+            text_3.text = "この舌画像の正解\n" + real[realm.where(ZetsuImage::class.java).equalTo("image_number", im_n_a).findAll()[0]?.image_number?.substring(0,1)!!.toInt() - 1]
             text_3.textSize = 32.0f
             inlinearLayout_4.addView(text_3)
 
@@ -154,13 +170,17 @@ class ResultActivity : AppCompatActivity() {
 
             linearLayout.addView(inlinearLayout_2, param)
             linearLayout.addView(inlinearLayout_3, param)
+
+            val separate_2 = View(this)
+            separate_2.background = back
+            linearLayout.addView(separate_2, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 5))
         }
 
         val inlinearLayout_5 = LinearLayout(this)
         inlinearLayout_5.orientation = LinearLayout.HORIZONTAL
 
-        val space_1 = Space(this)
-        inlinearLayout_5.addView(space_1, LinearLayout.LayoutParams(500, 100))
+        val space_2 = Space(this)
+        inlinearLayout_5.addView(space_2, LinearLayout.LayoutParams(500, 100))
 
         val button = Button(this)
         button.text = "次へ"
@@ -171,8 +191,8 @@ class ResultActivity : AppCompatActivity() {
         val inlinearLayout_6 = LinearLayout(this)
         inlinearLayout_6.orientation = LinearLayout.HORIZONTAL
 
-        val space_2 = Space(this)
-        inlinearLayout_6.addView(space_2, LinearLayout.LayoutParams(100, 200))
+        val space_3 = Space(this)
+        inlinearLayout_6.addView(space_3, LinearLayout.LayoutParams(100, 100))
 
         linearLayout.addView(inlinearLayout_5, param)
         linearLayout.addView(inlinearLayout_6, param)
@@ -181,8 +201,8 @@ class ResultActivity : AppCompatActivity() {
         if(miss_a.size or miss_b.size != 0) {
             for (i in Array(miss_a.size, { i -> i })) {
                 for (j in Array(miss_b.size, { i -> i })) {
-                    if (miss_a[i] == miss_b[j]) {
-                        if(miss_ans_a[i] == miss_ans_b[j]){
+                    if (miss_a[i].equals(miss_b[j])) {
+                        if(miss_ans_a[i].equals(miss_ans_b[j])){
                             miss_ans.add(miss_ans_a[i])
                             miss.add(miss_a[i])
                         }
@@ -190,7 +210,7 @@ class ResultActivity : AppCompatActivity() {
                 }
             }
         }else{
-            miss.add(0)
+            miss.add("")
             miss_ans.add("")
         }
         // ボタンタップ時
@@ -198,10 +218,10 @@ class ResultActivity : AppCompatActivity() {
 
     }
 
-    fun onButtonTapped(miss:MutableList<Long>, miss_ans:MutableList<String>){
+    fun onButtonTapped(miss:MutableList<String>, miss_ans:MutableList<String>){
         val intent = Intent(this, CommentActivity::class.java)
         Log.d("debug", "ミス:" + miss.toString() + "ミス:" + miss_ans.toString() )
-        intent.putExtra("MISS", miss.toLongArray())
+        intent.putExtra("MISS", miss.toTypedArray())
         intent.putExtra("MISS_ANS", miss_ans.toTypedArray())
         startActivity(intent)
     }
