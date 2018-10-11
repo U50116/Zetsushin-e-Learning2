@@ -150,11 +150,14 @@ class CommentActivity : AppCompatActivity() {
 
             inlinearLayout_3.addView(inlinearLayout_3_3, param)
 
+            val space_3_1 = Space(this)
+            inlinearLayout_3.addView(space_3_1, LinearLayout.LayoutParams(100, 50))
+
             val inlinearLayout_3_4 = LinearLayout(this)
             inlinearLayout_3_4.orientation = LinearLayout.VERTICAL
 
-            val space_2 = Space(this)
-            inlinearLayout_3_4.addView(space_2, LinearLayout.LayoutParams(100, 50))
+            val space_3_2 = Space(this)
+            inlinearLayout_3_4.addView(space_3_2, LinearLayout.LayoutParams(100, 50))
 
             val r_4 = resources.getIdentifier("t" + (num+1) + "_1", "drawable", packageName) //drawableの画像指定
             val imageView_4 = ImageView(this)
@@ -218,11 +221,14 @@ class CommentActivity : AppCompatActivity() {
 
             inlinearLayout_4.addView(inlinearLayout_4_3, param)
 
+            val space_4_1 = Space(this)
+            inlinearLayout_4.addView(space_4_1, LinearLayout.LayoutParams(100, 50))
+
             val inlinearLayout_4_4 = LinearLayout(this)
             inlinearLayout_4_4.orientation = LinearLayout.VERTICAL
 
-            val space_3 = Space(this)
-            inlinearLayout_4_4.addView(space_3, LinearLayout.LayoutParams(100, 50))
+            val space_4_2 = Space(this)
+            inlinearLayout_4_4.addView(space_4_2, LinearLayout.LayoutParams(100, 50))
 
             val r_8 = resources.getIdentifier("t" + (num+1) + "_2", "drawable", packageName) //drawableの画像指定
             val imageView_8 = ImageView(this)
