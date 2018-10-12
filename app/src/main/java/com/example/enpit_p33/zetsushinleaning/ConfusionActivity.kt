@@ -84,17 +84,16 @@ class ConfusionActivity : AppCompatActivity() {
         ca_d4.text = D_x[3].toString()
 
         val figureA = (A_x[0]+A_x[1]+A_x[2]+A_x[3])
-        ca_ansa.text = A_x[0].toString()
-        ca_all1.text = figureA.toString()
+        ca_ansa.text = (A_x[0].toDouble() / figureA.toDouble()).toString() + "(=" + A_x[0].toString() + "/" + figureA.toString() + ")"
         val figureB = (B_x[0]+B_x[1]+B_x[2]+B_x[3])
-        ca_ansb.text = B_x[1].toString()
-        ca_all2.text = figureB.toString()
+        ca_ansb.text = (B_x[1].toDouble() / figureB.toDouble()).toString() + "(=" + B_x[1].toString() + "/" + figureB.toString() + ")"
+
         val figureC = (C_x[0]+C_x[1]+C_x[2]+C_x[3])
-        ca_ansc.text = C_x[2].toString()
-        ca_all3.text = figureC.toString()
+        ca_ansc.text = (C_x[2].toDouble() / figureC.toDouble()).toString() + "(=" + C_x[2].toString() + "/" + figureC.toString() + ")"
+
         val figureD = (D_x[0]+D_x[1]+D_x[2]+D_x[3])
-        ca_ansd.text = D_x[3].toString()
-        ca_all4.text = figureD.toString()
+        ca_ansd.text = (D_x[3].toDouble() / figureD.toDouble()).toString() + "(=" + D_x[3].toString() + "/" + figureD.toString() + ")"
+
 
         val score = (A_x[0] + B_x[1] + C_x[2] + D_x[3])*10
         ca_score2.text = score.toString()
