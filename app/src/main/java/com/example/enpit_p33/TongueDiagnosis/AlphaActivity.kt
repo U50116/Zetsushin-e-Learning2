@@ -1,4 +1,4 @@
-package com.example.enpit_p33.zetsushinleaning
+package com.example.enpit_p33.TongueDiagnosis
 
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
@@ -12,7 +12,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
 import android.view.KeyEvent
-import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import io.realm.Realm
@@ -21,10 +20,14 @@ import io.realm.kotlin.createObject
 import java.util.*
 import android.widget.RadioButton
 import io.realm.RealmList
+import io.realm.RealmResults
+import android.view.KeyEvent.KEYCODE_BACK
+import android.view.View
 
-class BetaActivity : AppCompatActivity() {
+
+class AlphaActivity : AppCompatActivity() {
     private lateinit var realm: Realm
-    private var answerlist:MutableList<String> = mutableListOf("","","","","","","","","","") //ユーザーのリアルタイム解答
+    private val answerlist:MutableList<String> = mutableListOf("","","","","","","","","","") //ユーザーのリアルタイム解答
     private val colorlist:List<String> = listOf("紅舌","淡紅舌","淡白舌","紫舌") // 選択肢リスト
     private val WC = ViewGroup.LayoutParams.WRAP_CONTENT
     private val Q_SIZE = 10
@@ -40,34 +43,51 @@ class BetaActivity : AppCompatActivity() {
                 .build()
         realm = Realm.getInstance(realmConfig)
 
+        //レイアウト設定
         val scrollView = ScrollView(this)
         setContentView(scrollView)
         val linearLayout = LinearLayout(this)
         linearLayout.orientation = LinearLayout.VERTICAL
         scrollView.addView(linearLayout)
 
-        createQuestion(linearLayout)
+        val new_flag: Boolean
+        val his = (realm.where(History::class.java).equalTo("user_id", intent.getStringExtra("ID"))
+                .max("history_id")?.toInt() ?: 0)
+        val existence = realm.where(History::class.java).equalTo("user_id", intent.getStringExtra("ID"))
+                .equalTo("history_id", his).findFirst()
+        Log.d("debug", existence.toString())
+        if(existence == null) {
+            new_flag = true
+        }else{
+            new_flag = false
+        }
+        createQuestion(linearLayout, new_flag, existence)
     }
 
     @SuppressLint("ResourceType")
-    fun createQuestion(linearLayout: LinearLayout) {
-        var Id: Int = 0 // 使用するテスト問題のID
+    fun createQuestion(linearLayout: LinearLayout, new_flag: Boolean, existence: History?) {
+        var Id: Int// 使用するテスト問題のID
         var q_list: RealmList<QuestionList>?
-        val mylist = listOf("2_8", "2_6", "1_3", "4_1", "1_1", "2_2", "3_1", "4_3", "2_4", "3_3")
-        val myans: List<String> = listOf("紫舌", "紅舌", "淡紅舌", "淡白舌",
-                                         "淡白舌", "淡紅舌", "紅舌", "紫舌",
-                                         "淡紅舌", "淡白舌", "紫舌", "紅舌",
-                                         "紫舌", "淡白舌", "紅舌", "淡紅舌",
-                                         "淡紅舌", "紅舌", "淡白舌", "紫舌",
-                                         "淡白舌", "淡紅舌", "紅舌", "紫舌",
-                                         "淡紅舌", "淡白舌", "紫舌", "紅舌",
-                                         "紅舌", "淡白舌", "紫舌", "淡紅舌",
-                                         "紫舌", "淡白舌", "紅舌", "淡紅舌",
-                                         "淡紅舌", "紫舌", "淡白舌", "紅舌")
+        val mylist= listOf("1_1", "2_2", "4_1", "2_4", "2_6", "1_3", "4_3", "3_1", "3_3", "2_8")
+        val myans: List<String> = listOf("紅舌", "紫舌", "淡白舌", "淡紅舌",
+                "淡紅舌", "淡白舌", "紫舌", "紅舌",
+                "淡白舌", "淡紅舌", "紅舌", "紫舌",
+                "淡白舌", "淡紅舌", "紫舌", "紅舌",
+                "紫舌", "紅舌", "淡白舌", "淡紅舌",
+                "淡紅舌", "淡白舌", "紅舌", "紫舌",
+                "淡紅舌", "紅舌", "紫舌", "淡白舌",
+                "紅舌", "淡紅舌", "淡白舌", "紫舌",
+                "淡紅舌", "淡白舌", "紫舌", "紅舌",
+                "紅舌", "淡紅舌", "淡白舌", "紫舌")
 
         // テスト問題の指定
-        Id = myQuestion(mylist, myans)// randomQuestion(intent.getIntExtra("ALPHA", 0))
-        q_list = realm.where(Question::class.java).equalTo("question_id", Id).findAll()[0]?.questions
+        if (new_flag) {
+            Id = myQuestion(mylist, myans)// newQuestion()
+            q_list = realm.where(Question::class.java).equalTo("question_id", Id).findAll()[0]?.questions
+        } else {
+            Id = realm.where(Question::class.java).max("question_id")!!.toInt()
+            q_list = realm.where(Question::class.java).equalTo("question_id", Id).findAll()[0]?.questions
+        }
 
         val param = LinearLayout.LayoutParams(WC, WC)
         val back = GradientDrawable()
@@ -77,7 +97,7 @@ class BetaActivity : AppCompatActivity() {
         inlinearLayout_1.orientation = LinearLayout.VERTICAL
 
         val title = TextView(this)
-        title.text = "テスト問題R1"
+        title.text = "テスト問題1"
         title.setTypeface(Typeface.create(Typeface.SERIF, Typeface.BOLD_ITALIC))
         title.textSize = 64.0f
         if (title.parent != null) {
@@ -86,7 +106,7 @@ class BetaActivity : AppCompatActivity() {
         inlinearLayout_1.addView(title, param)
 
         val question_statement = TextView(this)
-        question_statement.text = "前の問題と選択肢をランダムに並び変えています。\n問いに示された舌画像を見て、4つの選択肢の中から正しいと思われる選択肢を1つ選んでください。"
+        question_statement.text = "問いに示された舌画像を見て、4つの選択肢の中から正しいと思われる選択肢を1つ選んでください。"
         question_statement.textSize = 32.0f
         inlinearLayout_1.addView(question_statement, param)
 
@@ -134,6 +154,7 @@ class BetaActivity : AppCompatActivity() {
             radioGroup.addView(radioButton4, param)
             radioGroup.setPadding(0,50,0,50)
             inlinearLayout_3.addView(radioGroup, param)
+
             // ラジオボタンタップ時
             radioGroup.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
                 override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
@@ -177,6 +198,34 @@ class BetaActivity : AppCompatActivity() {
         linearLayout.addView(inlinearLayout_5, param)
     }
 /*
+    fun newQuestion(): Int {
+        // テスト問題の一番大きいIDの次の数字を取得
+        val maxId = realm.where(Question::class.java).max("question_id")
+        val nextId = (maxId?.toInt() ?: 0) + 1
+
+        //新しい問題を生成
+        realm.executeTransaction {
+            realm.createObject<Question>(nextId).apply {
+                for (num in Array(Q_SIZE, { i -> i })) {
+                    val tmp = realm.where(ZetsuImage::class.java).equalTo("zetsu_color", colorlist[Random().nextInt(4)]).findAll()
+                    val image_n = (tmp[Random().nextInt(tmp.size)]?.image_id ?: 0)
+                    Collections.shuffle(colorlist)
+                    val q = realm.createObject<QuestionList>().apply {
+                        question_number = num + 1
+                        image_number = image_n
+                        choice1 = colorlist[0]
+                        choice2 = colorlist[1]
+                        choice3 = colorlist[2]
+                        choice4 = colorlist[3]
+
+                        Log.d("debug", "テスト問題" + question_number.toString() + ":" + image_number.toString())
+                    }
+                    questions.add(q)
+                }
+            }
+        }
+        return nextId
+    }
 
     fun randomQuestion(Id: Int): Int {
         // テスト問題の一番大きいIDの次の数字を取得
@@ -213,16 +262,13 @@ class BetaActivity : AppCompatActivity() {
         // テスト問題の一番大きいIDの次の数字を取得
         val maxId = realm.where(Question::class.java).max("question_id")
         val nextId = (maxId?.toInt() ?: 0) + 1
-        // val alphaId = realm.where(History::class.java).equalTo("history_id", intent.getIntExtra("ALPHA", 0).toLong()).findFirst()?.question_id
-        // val numbers = realm.where(Question::class.java).equalTo("question_id", alphaId).findFirst()?.questions
-        val numbers = listOf(10,5,6,3,1,2,8,7,4,9)
 
         //新しい問題を生成
         realm.executeTransaction {
             realm.createObject<Question>(nextId).apply {
                 for (num in Array(Q_SIZE, { i -> i })) {
                     val q = realm.createObject<QuestionList>().apply {
-                        question_number = numbers[num]
+                        question_number = num + 1
                         image_number = mylist[num]
                         choice1 = myans[0 + num * 4]
                         choice2 = myans[1 + num * 4]
@@ -238,31 +284,28 @@ class BetaActivity : AppCompatActivity() {
         return nextId
     }
 
-    fun onButtonTapped(Id: Int) {
+    fun onButtonTapped(Id: Int){
         val nextId = (realm.where(History::class.java).max("history_id")?.toLong() ?: 0L) + 1
         val user = intent.getStringExtra("ID")
-        val alpha = intent.getIntExtra("ALPHA", 0)
-        val intent = Intent(this, ReConfusionActivity::class.java)
-        intent.putExtra("BETA", Id)
+        val intent = Intent(this, ConfusionActivity::class.java)
+        intent.putExtra("ALPHA", Id)
         intent.putExtra("ID", user)
-        intent.putExtra("ALPHA", alpha)
-        realm.executeTransaction {
+        realm.executeTransaction{
             realm.createObject<History>(nextId).apply {
                 user_id = intent.getStringExtra("ID")
                 question_id = Id
-                for (i in answerlist.indices) {
+                for(i in answerlist.indices){
                     val a = realm.createObject<Result>().apply {
                         answer = answerlist[i]
+                        Log.d("debug", "解答" + answerlist[i])
                     }
                     result.add(a)
                 }
                 date = Date().toString()
             }
-            Log.d("debug", realm.where(QuestionList::class.java).findAll().size.toString())
-            Log.d("debug", "beta_id:" + intent.getIntExtra("BETA", 0).toString())
-            Log.d("debug", "alpha_id:" + intent.getIntExtra("ALPHA", 0).toString())
-            startActivity(intent)
         }
+        Log.d("debug", realm.where(QuestionList::class.java).findAll().size.toString())
+        startActivity(intent)
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {

@@ -1,4 +1,4 @@
-package com.example.enpit_p33.zetsushinleaning
+package com.example.enpit_p33.TongueDiagnosis
 
 import io.realm.RealmList
 import io.realm.RealmObject

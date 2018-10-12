@@ -838,12 +838,11 @@
                     app:layout_constraintTop_toBottomOf="@+id/ca_ansc" />
 
 
-
                 <TextView
 
                     android:id="@+id/ca_score2"
 
-                    android:layout_width="65dp"
+                    android:layout_width="115dp"
 
                     android:layout_height="53dp"
 

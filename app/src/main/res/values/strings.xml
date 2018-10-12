@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ZetsushinLeaning</string>
+    <string name="app_name">TongueDiagnosis</string>
     <string name="login">"  LOGIN  "</string>
     <string name="account_new">新しいアカウント</string>
     <string name="warning_text">IDとパスワードを入力してください</string>

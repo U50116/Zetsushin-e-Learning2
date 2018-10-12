@@ -1,4 +1,4 @@
-package com.example.enpit_p33.zetsushinleaning
+package com.example.enpit_p33.TongueDiagnosis
 
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity

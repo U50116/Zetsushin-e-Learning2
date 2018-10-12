@@ -1,4 +1,4 @@
-package com.example.enpit_p33.zetsushinleaning
+package com.example.enpit_p33.TongueDiagnosis
 
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
@@ -70,7 +70,7 @@ class CommentActivity : AppCompatActivity() {
         inlinearLayout_1.addView(title, param)
 
         val question_statement = TextView(this)
-        question_statement.text = "2回とも同じ舌画像で同じ間違えをしたものをピックアップしました。\n間違えた舌画像と選択した舌画像で舌色がどのように異なるのか、それぞれの舌画像で特徴的な舌の色を見て確認しましょう。"
+        question_statement.text = "同じ舌画像で2回とも同じ間違えをしたものをピックアップしました。\n問の舌画像と誤って選択した舌画像で舌色がどのように異なるのか、それぞれの舌画像で特徴的な舌の色を見て確認しましょう。"
         question_statement.textSize = 32.0f
         inlinearLayout_1.addView(question_statement, LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT))
 
@@ -99,7 +99,7 @@ class CommentActivity : AppCompatActivity() {
             inlinearLayout_3_1.orientation = LinearLayout.VERTICAL
 
             val state_1 = TextView(this)
-            state_1.text = "問中の舌画像\n誤解答した画像" + "「" + color[miss[num].substring(0,1).toInt() - 1] + "」"
+            state_1.text = "問の舌画像" + "「" + color[miss[num].substring(0,1).toInt() - 1] + "」"
             state_1.textSize = 32.0f
             state_1.gravity = Gravity.CENTER
             inlinearLayout_3_1.addView(state_1, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, WC))
@@ -137,7 +137,7 @@ class CommentActivity : AppCompatActivity() {
             inlinearLayout_3_3.orientation = LinearLayout.VERTICAL
 
             val state_2 = TextView(this)
-            state_2.text = "  \n特徴的な色を表示した舌"
+            state_2.text = "  特徴的な色を表示した舌"
             state_2.textSize = 32.0f
             state_2.gravity = Gravity.CENTER
             inlinearLayout_3_3.addView(state_2, LinearLayout.LayoutParams(WC, WC))
@@ -175,10 +175,10 @@ class CommentActivity : AppCompatActivity() {
 
             val state_3 = TextView(this)
             Log.d("debug", miss_ans[num])
-            state_3.text = "選択した舌の色の\n代表的な画像" + "「" + miss_ans[num] + "」"
+            state_3.text = "誤って選択した\n舌の代表的な舌画像" + "「" + miss_ans[num] + "」"
             state_3.textSize = 32.0f
             state_3.gravity = Gravity.CENTER
-            inlinearLayout_4_1.addView(state_3, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, WC))
+            inlinearLayout_4_1.addView(state_3, param)
 
             val r_5 = resources.getIdentifier("q" + real[miss_ans[num]], "drawable", packageName) //drawableの画像指定
             val imageView_5 = ImageView(this)
@@ -212,7 +212,7 @@ class CommentActivity : AppCompatActivity() {
             inlinearLayout_4_3.orientation = LinearLayout.VERTICAL
 
             val state_4 = TextView(this)
-            state_4.text = "  \n特徴的な色を表示した舌"
+            state_4.text = "特徴的な色を表示した舌"
             state_4.textSize = 32.0f
             state_4.gravity = Gravity.CENTER
             inlinearLayout_4_3.addView(state_4, LinearLayout.LayoutParams(WC, WC))
@@ -241,11 +241,31 @@ class CommentActivity : AppCompatActivity() {
 
             inlinearLayout_4.addView(inlinearLayout_4_4, param)
 
+            val inlinearLayout_5 = LinearLayout(this)
+            inlinearLayout_5.orientation = LinearLayout.HORIZONTAL
+
+            val space_5_1 = Space(this)
+            inlinearLayout_5.addView(space_5_1, LinearLayout.LayoutParams(550, 50))
+
+            val text_3 = TextView(this)
+            text_3.text = "対比"
+            text_3.setTextColor(Color.BLUE)
+            text_3.setTypeface(Typeface.create(Typeface.SERIF, Typeface.BOLD_ITALIC))
+            text_3.textSize = 32.0f
+            text_3.gravity = Gravity.CENTER
+            inlinearLayout_5.addView(text_3, param)
+
+            val imageView_9 = ImageView(this)
+            val r_9 = resources.getIdentifier("icon_reverse", "drawable", packageName)
+            imageView_9.setImageResource(r_9) //imageViewに画像設定
+            inlinearLayout_5.addView(imageView_9, LinearLayout.LayoutParams(WC, 100))
+
             linearLayout.addView(inlinearLayout_2, param)
             linearLayout.addView(inlinearLayout_3, param)
 
-            val space_1 = Space(this)
-            linearLayout.addView(space_1, LinearLayout.LayoutParams(100, 50))
+            //val space_1 = Space(this)
+            //linearLayout.addView(space_1, LinearLayout.LayoutParams(100, 50))
+            linearLayout.addView(inlinearLayout_5, param)
 
             linearLayout.addView(inlinearLayout_4, param)
 

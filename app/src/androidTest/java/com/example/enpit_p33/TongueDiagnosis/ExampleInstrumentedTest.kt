@@ -1,4 +1,4 @@
-package com.example.enpit_p33.zetsushinleaning
+package com.example.enpit_p33.TongueDiagnosis
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4

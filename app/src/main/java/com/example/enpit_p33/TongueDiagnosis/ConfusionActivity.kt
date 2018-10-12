@@ -1,4 +1,4 @@
-package com.example.enpit_p33.zetsushinleaning
+package com.example.enpit_p33.TongueDiagnosis
 
 
 
@@ -17,7 +17,7 @@ import io.realm.Realm
 import io.realm.RealmConfiguration
 
 import kotlinx.android.synthetic.main.activity_confusion.*
-
+import java.math.BigDecimal
 
 
 class ConfusionActivity : AppCompatActivity() {
@@ -169,24 +169,20 @@ class ConfusionActivity : AppCompatActivity() {
 
 
         val figureA = (A_x[0]+A_x[1]+A_x[2]+A_x[3])
-
-        ca_ansa.text = (A_x[0].toDouble() / figureA.toDouble()).toString() + "(=" + A_x[0].toString() + "/" + figureA.toString() + ")"
+        val rate_a = A_x[0].toDouble() / figureA.toDouble()
+        ca_ansa.text = String.format("%.2f", rate_a) + "(=" + A_x[0].toString() + "/" + figureA.toString() + ")"
 
         val figureB = (B_x[0]+B_x[1]+B_x[2]+B_x[3])
-
-        ca_ansb.text = (B_x[1].toDouble() / figureB.toDouble()).toString() + "(=" + B_x[1].toString() + "/" + figureB.toString() + ")"
-
-
+        val rate_b = B_x[1].toDouble() / figureB.toDouble()
+        ca_ansb.text = String.format("%.2f", rate_b) + "(=" + B_x[1].toString() + "/" + figureB.toString() + ")"
 
         val figureC = (C_x[0]+C_x[1]+C_x[2]+C_x[3])
-
-        ca_ansc.text = (C_x[2].toDouble() / figureC.toDouble()).toString() + "(=" + C_x[2].toString() + "/" + figureC.toString() + ")"
-
-
+        val rate_c = C_x[2].toDouble() / figureC.toDouble()
+        ca_ansc.text = String.format("%.2f", rate_c) + "(=" + C_x[2].toString() + "/" + figureC.toString() + ")"
 
         val figureD = (D_x[0]+D_x[1]+D_x[2]+D_x[3])
-
-        ca_ansd.text = (D_x[3].toDouble() / figureD.toDouble()).toString() + "(=" + D_x[3].toString() + "/" + figureD.toString() + ")"
+        val rate_d = D_x[3].toDouble() / figureD.toDouble()
+        ca_ansd.text = String.format("%.2f", rate_d) + "(=" + D_x[3].toString() + "/" + figureD.toString() + ")"
 
 
 

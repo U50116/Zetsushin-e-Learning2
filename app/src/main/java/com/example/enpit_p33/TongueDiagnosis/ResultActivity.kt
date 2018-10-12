@@ -1,4 +1,4 @@
-package com.example.enpit_p33.zetsushinleaning
+package com.example.enpit_p33.TongueDiagnosis
 
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
@@ -134,6 +134,7 @@ class ResultActivity : AppCompatActivity() {
             val text_1 = TextView(this)
             text_1.text = "テスト問題1の選択" + "   →   "+ realm.where(History::class.java).equalTo("question_id", a).findAll()[0]?.result!![num]?.answer
             text_1.textSize = 32.0f
+            text_1.setTextColor(Color.BLUE)
             if(a_falsehood){
                 text_1.setTextColor(Color.RED)
                 miss_a.add((im_n_a ?: ""))
@@ -154,6 +155,7 @@ class ResultActivity : AppCompatActivity() {
                     Log.d("debug", q[i]!!.question_number.toString()) // テスト問題1の番号
                     Log.d("debug", "2の問題:" + realm.where(History::class.java).equalTo("question_id", b).findAll()[0]?.result!![i]?.answer) // テスト問題1の番号
                     text_2.text = "テスト問題R1の選択" + "   →   " + realm.where(History::class.java).equalTo("question_id", b).findAll()[0]!!.result[i]?.answer
+                    text_2.setTextColor(Color.BLUE)
                     val b_color = real[realm.where(ZetsuImage::class.java).equalTo("image_number", im_n_a).findAll()[0]?.image_number?.substring(0,1)!!.toInt() - 1]
                     val b_falsehood = !b_color.equals(realm.where(History::class.java).equalTo("question_id", b).findAll()[0]?.result!![i]?.answer)
                     if(b_falsehood){
@@ -173,6 +175,7 @@ class ResultActivity : AppCompatActivity() {
             val text_3 = TextView(this)
             text_3.text = "この舌画像の正解" + "   →   " + real[realm.where(ZetsuImage::class.java).equalTo("image_number", im_n_a).findAll()[0]?.image_number?.substring(0,1)!!.toInt() - 1]
             text_3.textSize = 32.0f
+            text_3.setTextColor(Color.BLUE)
             inlinearLayout_4.addView(text_3)
 
             inlinearLayout_3.addView(inlinearLayout_4, param)
