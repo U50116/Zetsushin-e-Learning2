@@ -61,7 +61,7 @@ class CommentActivity : AppCompatActivity() {
         inlinearLayout_1.orientation = LinearLayout.VERTICAL
 
         val title = TextView(this)
-        title.text = "同一比較"
+        title.text = "2回とも同じ誤りへの対処"
         title.setTypeface(Typeface.create(Typeface.SERIF, Typeface.BOLD_ITALIC))
         title.textSize = 64.0f
         if (title.parent != null){
@@ -70,7 +70,7 @@ class CommentActivity : AppCompatActivity() {
         inlinearLayout_1.addView(title, param)
 
         val question_statement = TextView(this)
-        question_statement.text = "2回とも同じ画像で同じ間違えをしたものをピックアップしました。\n間違えた画像と選択した舌の色がどう違うのかそれぞれの舌の色テンプレートを見て確認しましょう。"
+        question_statement.text = "2回とも同じ舌画像で同じ間違えをしたものをピックアップしました。\n間違えた舌画像と選択した舌画像で舌色がどのように異なるのか、それぞれの舌画像で特徴的な舌の色を見て確認しましょう。"
         question_statement.textSize = 32.0f
         inlinearLayout_1.addView(question_statement, LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT))
 
@@ -89,11 +89,8 @@ class CommentActivity : AppCompatActivity() {
 
             inlinearLayout_2.addView(inlinearLayout_2_1, param)
 
-            val q_title = TextView(this)
-            q_title.text = "問中の舌画像"
-            q_title.textSize = 32.0f
-            q_title.gravity = Gravity.CENTER
-            inlinearLayout_2_1.addView(q_title, param)
+            val space_2_1 = Space(this)
+            inlinearLayout_2_1.addView(space_2_1, LinearLayout.LayoutParams(100, 50))
 
             val inlinearLayout_3 = LinearLayout(this)
             inlinearLayout_3.orientation = LinearLayout.HORIZONTAL
@@ -102,21 +99,24 @@ class CommentActivity : AppCompatActivity() {
             inlinearLayout_3_1.orientation = LinearLayout.VERTICAL
 
             val state_1 = TextView(this)
-            state_1.text = "誤解答した画像" + "「" + color[miss[num].substring(0,1).toInt() - 1] + "」"
+            state_1.text = "問中の舌画像\n誤解答した画像" + "「" + color[miss[num].substring(0,1).toInt() - 1] + "」"
             state_1.textSize = 32.0f
             state_1.gravity = Gravity.CENTER
             inlinearLayout_3_1.addView(state_1, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, WC))
 
             val r_1 = resources.getIdentifier("q" + miss[num], "drawable", packageName) //drawableの画像指定
             val imageView_1 = ImageView(this)
-            imageView_1.setImageResource(r_1) //imageViewに画像設定
-            imageView_1.background = back
-            inlinearLayout_3_1.addView(imageView_1, param)
+            imageView_1.setImageResource(r_1)
+            imageView_1.background
+            inlinearLayout_3_1.addView(imageView_1,param)
 
             inlinearLayout_3.addView(inlinearLayout_3_1, param)
 
             val inlinearLayout_3_2 = LinearLayout(this)
             inlinearLayout_3_2.orientation = LinearLayout.VERTICAL
+
+            val space_3_2_1 = Space(this)
+            inlinearLayout_3_2.addView(space_3_2_1, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 100))
 
             val text_1 = TextView(this)
             text_1.text = "注目点"
@@ -137,10 +137,10 @@ class CommentActivity : AppCompatActivity() {
             inlinearLayout_3_3.orientation = LinearLayout.VERTICAL
 
             val state_2 = TextView(this)
-            state_2.text = "マーキング画像"
+            state_2.text = "  \n特徴的な色を表示した舌"
             state_2.textSize = 32.0f
             state_2.gravity = Gravity.CENTER
-            inlinearLayout_3_3.addView(state_2, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, WC))
+            inlinearLayout_3_3.addView(state_2, LinearLayout.LayoutParams(WC, WC))
 
             val imageView_3 = ImageView(this)
             val r_3 = resources.getIdentifier("m" + miss[num] + "_" + real[miss_ans[num]] , "drawable", packageName) //drawableの画像指
@@ -159,7 +159,7 @@ class CommentActivity : AppCompatActivity() {
             val space_3_2 = Space(this)
             inlinearLayout_3_4.addView(space_3_2, LinearLayout.LayoutParams(100, 50))
 
-            val r_4 = resources.getIdentifier("t" + (num+1) + "_1", "drawable", packageName) //drawableの画像指定
+            val r_4 = resources.getIdentifier("t" + real[color[miss[num].substring(0,1).toInt() - 1]] + "_" + real[miss_ans[num]], "drawable", packageName) //drawableの画像指定
             val imageView_4 = ImageView(this)
             imageView_4.setImageResource(r_4) //imageViewに画像設定
             inlinearLayout_3_4.addView(imageView_4, param)
@@ -189,6 +189,9 @@ class CommentActivity : AppCompatActivity() {
             val inlinearLayout_4_2 = LinearLayout(this)
             inlinearLayout_4_2.orientation = LinearLayout.VERTICAL
 
+            val space_4_2_1 = Space(this)
+            inlinearLayout_4_2.addView(space_4_2_1, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 100))
+
             val text_2 = TextView(this)
             text_2.text = "注目点"
             text_2.setTextColor(Color.BLUE)
@@ -208,10 +211,10 @@ class CommentActivity : AppCompatActivity() {
             inlinearLayout_4_3.orientation = LinearLayout.VERTICAL
 
             val state_4 = TextView(this)
-            state_4.text = "マーキング画像"
+            state_4.text = "  \n特徴的な色を表示した舌"
             state_4.textSize = 32.0f
             state_4.gravity = Gravity.CENTER
-            inlinearLayout_4_3.addView(state_4, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, WC))
+            inlinearLayout_4_3.addView(state_4, LinearLayout.LayoutParams(WC, WC))
 
             val r_7 = resources.getIdentifier( "m" + real[miss_ans[num]]+ "_" + miss[num], "drawable", packageName) //drawableの画像指定
             val imageView_7 = ImageView(this)
@@ -230,7 +233,7 @@ class CommentActivity : AppCompatActivity() {
             val space_4_2 = Space(this)
             inlinearLayout_4_4.addView(space_4_2, LinearLayout.LayoutParams(100, 50))
 
-            val r_8 = resources.getIdentifier("t" + (num+1) + "_2", "drawable", packageName) //drawableの画像指定
+            val r_8 = resources.getIdentifier("t" + real[miss_ans[num]] + "_" + real[color[miss[num].substring(0,1).toInt() - 1]], "drawable", packageName) //drawableの画像指定
             val imageView_8 = ImageView(this)
             imageView_8.setImageResource(r_8) //imageViewに画像設定
             inlinearLayout_4_4.addView(imageView_8, param)
@@ -239,6 +242,10 @@ class CommentActivity : AppCompatActivity() {
 
             linearLayout.addView(inlinearLayout_2, param)
             linearLayout.addView(inlinearLayout_3, param)
+
+            val space_1 = Space(this)
+            linearLayout.addView(space_1, LinearLayout.LayoutParams(100, 50))
+
             linearLayout.addView(inlinearLayout_4, param)
 
             val separate_2 = View(this)

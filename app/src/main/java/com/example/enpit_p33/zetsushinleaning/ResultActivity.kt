@@ -81,7 +81,7 @@ class ResultActivity : AppCompatActivity() {
         inlinearLayout_1.orientation = LinearLayout.VERTICAL
 
         val title = TextView(this)
-        title.text = "テスト結果"
+        title.text = "誤り解析"
         title.setTypeface(Typeface.create(Typeface.SERIF, Typeface.BOLD_ITALIC))
         title.textSize = 64.0f
         if (title.parent != null) {
@@ -105,6 +105,7 @@ class ResultActivity : AppCompatActivity() {
             val im_n_a = realm.where(Question::class.java).equalTo("question_id", a).findAll()[0]?.questions!![num]?.image_number
             val a_color = real[realm.where(ZetsuImage::class.java).equalTo("image_number", im_n_a).findAll()[0]?.image_number?.substring(0,1)!!.toInt() - 1]
             var a_falsehood = !a_color.equals(realm.where(History::class.java).equalTo("question_id", a).findAll()[0]?.result!![num]?.answer)
+            val flag = arrayOf(true, true)
 
             val inlinearLayout_2 = LinearLayout(this)
             inlinearLayout_2.orientation = LinearLayout.VERTICAL
@@ -131,14 +132,18 @@ class ResultActivity : AppCompatActivity() {
 
             // テキスト
             val text_1 = TextView(this)
-            text_1.text = "テスト問題1の選択\n" + realm.where(History::class.java).equalTo("question_id", a).findAll()[0]?.result!![num]?.answer
+            text_1.text = "テスト問題1の選択" + "   →   "+ realm.where(History::class.java).equalTo("question_id", a).findAll()[0]?.result!![num]?.answer
             text_1.textSize = 32.0f
             if(a_falsehood){
                 text_1.setTextColor(Color.RED)
                 miss_a.add((im_n_a ?: ""))
                 miss_ans_a.add((realm.where(History::class.java).equalTo("question_id", a).findAll()[0]?.result!![num]?.answer ?: ""))
+                flag[0] = false
             }
             inlinearLayout_4.addView(text_1, param)
+
+            val space_4_1 = Space(this)
+            inlinearLayout_4.addView(space_4_1, LinearLayout.LayoutParams(50, 30))
 
             val text_2 = TextView(this)
             text_2.textSize = 32.0f
@@ -148,32 +153,37 @@ class ResultActivity : AppCompatActivity() {
                 if (q[i]!!.question_number.equals(q_list[num]?.question_number)) {
                     Log.d("debug", q[i]!!.question_number.toString()) // テスト問題1の番号
                     Log.d("debug", "2の問題:" + realm.where(History::class.java).equalTo("question_id", b).findAll()[0]?.result!![i]?.answer) // テスト問題1の番号
-                    text_2.text = "テスト問題2の選択\n" + realm.where(History::class.java).equalTo("question_id", b).findAll()[0]!!.result[i]?.answer
+                    text_2.text = "テスト問題R1の選択" + "   →   " + realm.where(History::class.java).equalTo("question_id", b).findAll()[0]!!.result[i]?.answer
                     val b_color = real[realm.where(ZetsuImage::class.java).equalTo("image_number", im_n_a).findAll()[0]?.image_number?.substring(0,1)!!.toInt() - 1]
                     val b_falsehood = !b_color.equals(realm.where(History::class.java).equalTo("question_id", b).findAll()[0]?.result!![i]?.answer)
                     if(b_falsehood){
                         text_2.setTextColor(Color.RED)
                         miss_b.add((im_n_a ?: ""))
                         miss_ans_b.add((realm.where(History::class.java).equalTo("question_id", b).findAll()[0]!!.result[i]?.answer ?: ""))
+                        flag[1] = false
                     }else{
                     }
                 }
             }
             inlinearLayout_4.addView(text_2, param)
 
+            val space_4_2 = Space(this)
+            inlinearLayout_4.addView(space_4_2, LinearLayout.LayoutParams(50, 30))
+
             val text_3 = TextView(this)
-            text_3.text = "この舌画像の正解\n" + real[realm.where(ZetsuImage::class.java).equalTo("image_number", im_n_a).findAll()[0]?.image_number?.substring(0,1)!!.toInt() - 1]
+            text_3.text = "この舌画像の正解" + "   →   " + real[realm.where(ZetsuImage::class.java).equalTo("image_number", im_n_a).findAll()[0]?.image_number?.substring(0,1)!!.toInt() - 1]
             text_3.textSize = 32.0f
             inlinearLayout_4.addView(text_3)
 
             inlinearLayout_3.addView(inlinearLayout_4, param)
 
-            linearLayout.addView(inlinearLayout_2, param)
-            linearLayout.addView(inlinearLayout_3, param)
-
-            val separate_2 = View(this)
-            separate_2.background = back
-            linearLayout.addView(separate_2, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 5))
+            if((flag[0] == false) or  (flag[1] == false)){
+                linearLayout.addView(inlinearLayout_2, param)
+                linearLayout.addView(inlinearLayout_3, param)
+                val separate_2 = View(this)
+                separate_2.background = back
+                linearLayout.addView(separate_2, LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 5))
+            }
         }
 
         val inlinearLayout_5 = LinearLayout(this)

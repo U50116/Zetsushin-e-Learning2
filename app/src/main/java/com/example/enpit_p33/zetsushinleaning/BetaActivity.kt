@@ -77,7 +77,7 @@ class BetaActivity : AppCompatActivity() {
         inlinearLayout_1.orientation = LinearLayout.VERTICAL
 
         val title = TextView(this)
-        title.text = "テスト問題2"
+        title.text = "テスト問題R1"
         title.setTypeface(Typeface.create(Typeface.SERIF, Typeface.BOLD_ITALIC))
         title.textSize = 64.0f
         if (title.parent != null) {
