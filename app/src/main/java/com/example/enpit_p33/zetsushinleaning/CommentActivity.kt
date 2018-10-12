@@ -145,7 +145,6 @@ class CommentActivity : AppCompatActivity() {
             val imageView_3 = ImageView(this)
             val r_3 = resources.getIdentifier("m" + miss[num] + "_" + real[miss_ans[num]] , "drawable", packageName) //drawableの画像指
             imageView_3.setImageResource(r_3) //imageViewに画像設定
-            imageView_3.background = back
             inlinearLayout_3_3.addView(imageView_3, param)
 
             inlinearLayout_3.addView(inlinearLayout_3_3, param)
@@ -166,6 +165,8 @@ class CommentActivity : AppCompatActivity() {
 
             inlinearLayout_3.addView(inlinearLayout_3_4, param)
 
+
+
             val inlinearLayout_4 = LinearLayout(this)
             inlinearLayout_4.orientation = LinearLayout.HORIZONTAL
 
@@ -173,6 +174,7 @@ class CommentActivity : AppCompatActivity() {
             inlinearLayout_4_1.orientation = LinearLayout.VERTICAL
 
             val state_3 = TextView(this)
+            Log.d("debug", miss_ans[num])
             state_3.text = "選択した舌の色の\n代表的な画像" + "「" + miss_ans[num] + "」"
             state_3.textSize = 32.0f
             state_3.gravity = Gravity.CENTER
@@ -181,7 +183,6 @@ class CommentActivity : AppCompatActivity() {
             val r_5 = resources.getIdentifier("q" + real[miss_ans[num]], "drawable", packageName) //drawableの画像指定
             val imageView_5 = ImageView(this)
             imageView_5.setImageResource(r_5) //imageViewに画像設定
-            imageView_5.background = back
             inlinearLayout_4_1.addView(imageView_5, param)
 
             inlinearLayout_4.addView(inlinearLayout_4_1, param)
