@@ -1,55 +1,30 @@
 package com.example.enpit_p33.TongueDiagnosis
 
-
-
 import android.content.Intent
-
 import android.support.v7.app.AppCompatActivity
-
 import android.os.Bundle
-
 import android.view.KeyEvent
-
 import android.view.View
-
 import io.realm.Realm
-
 import io.realm.RealmConfiguration
-
 import kotlinx.android.synthetic.main.activity_confusion.*
-import java.math.BigDecimal
 
-
+// 混合行列を表示する
 class ConfusionActivity : AppCompatActivity() {
-
     private lateinit var realm: Realm
-
     private val Q_SIZE = 10
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_confusion)
-
         val realmConfig = RealmConfiguration.Builder()
-
                 .name("zetsushinleaning.realm")
-
                 .deleteRealmIfMigrationNeeded()
-
                 .schemaVersion(0)
-
                 .build()
-
         realm = Realm.getInstance(realmConfig)
 
-
-
-        confusion()
-
+        confusion() // 結果を混合行列に表示
     }
 
 

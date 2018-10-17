@@ -21,6 +21,9 @@ import io.realm.kotlin.createObject
 import java.util.*
 import android.widget.RadioButton
 import io.realm.RealmList
+import org.jetbrains.anko.alert
+import org.jetbrains.anko.yesButton
+
 
 class BetaActivity : AppCompatActivity() {
     private lateinit var realm: Realm
@@ -68,6 +71,7 @@ class BetaActivity : AppCompatActivity() {
         // テスト問題の指定
         Id = myQuestion(mylist, myans)// randomQuestion(intent.getIntExtra("ALPHA", 0))
         q_list = realm.where(Question::class.java).equalTo("question_id", Id).findAll()[0]?.questions
+
 
         val param = LinearLayout.LayoutParams(WC, WC)
         val back = GradientDrawable()
@@ -246,6 +250,12 @@ class BetaActivity : AppCompatActivity() {
         intent.putExtra("BETA", Id)
         intent.putExtra("ID", user)
         intent.putExtra("ALPHA", alpha)
+        for(i in answerlist.indices) {
+            if(answerlist[i].equals("")){
+                alert("まだすべて解答していません。") { yesButton {} }.show()
+                return
+            }
+        }
         realm.executeTransaction {
             realm.createObject<History>(nextId).apply {
                 user_id = intent.getStringExtra("ID")

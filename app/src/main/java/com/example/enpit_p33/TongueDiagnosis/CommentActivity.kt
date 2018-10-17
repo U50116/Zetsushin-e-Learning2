@@ -17,6 +17,7 @@ import android.view.ViewGroup
 import android.widget.*
 import io.realm.Realm
 import io.realm.RealmConfiguration
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 class CommentActivity : AppCompatActivity() {
@@ -87,10 +88,20 @@ class CommentActivity : AppCompatActivity() {
             val inlinearLayout_2_1 = LinearLayout(this)
             inlinearLayout_2_1.orientation = LinearLayout.VERTICAL
 
-            inlinearLayout_2.addView(inlinearLayout_2_1, param)
+            val space_2_1_1 = Space(this)
+            inlinearLayout_2_1.addView(space_2_1_1, LinearLayout.LayoutParams(100, 50))
 
-            val space_2_1 = Space(this)
-            inlinearLayout_2_1.addView(space_2_1, LinearLayout.LayoutParams(100, 50))
+            val text_2_1_1 = TextView(this)
+            text_2_1_1.text = "問の「" +  color[miss[num].substring(0,1).toInt() - 1] + "」を「" + miss_ans[num] + "」と2回も誤った"
+            text_2_1_1.setTextColor(Color.RED)
+            text_2_1_1.textSize = 32.0f
+            text_2_1_1.gravity = Gravity.CENTER
+            inlinearLayout_2_1.addView(text_2_1_1, param)
+
+            val space_2_1_2 = Space(this)
+            inlinearLayout_2_1.addView(space_2_1_2, LinearLayout.LayoutParams(100, 50))
+
+            inlinearLayout_2.addView(inlinearLayout_2_1, param)
 
             val inlinearLayout_3 = LinearLayout(this)
             inlinearLayout_3.orientation = LinearLayout.HORIZONTAL
@@ -150,22 +161,104 @@ class CommentActivity : AppCompatActivity() {
             inlinearLayout_3.addView(inlinearLayout_3_3, param)
 
             val space_3_1 = Space(this)
-            inlinearLayout_3.addView(space_3_1, LinearLayout.LayoutParams(100, 50))
+            inlinearLayout_3.addView(space_3_1, LinearLayout.LayoutParams(50, 50))
 
             val inlinearLayout_3_4 = LinearLayout(this)
             inlinearLayout_3_4.orientation = LinearLayout.VERTICAL
 
+
+
+
+/*
+            val text_3_4_1 = TextView(this)
+            text_3_4_1.text = color[miss[num].substring(0,1).toInt() - 1] + "の\n特徴的な色"
+            text_3_4_1.textSize = 32.0f
+            text_3_4_1.gravity = Gravity.CENTER
+            inlinearLayout_3_4.addView(text_3_4_1, param)
+*/
+
+
+
+
+            //ここから
             val space_3_2 = Space(this)
-            inlinearLayout_3_4.addView(space_3_2, LinearLayout.LayoutParams(100, 50))
+            inlinearLayout_3_4.addView(space_3_2, LinearLayout.LayoutParams(50, 50))
 
             val r_4 = resources.getIdentifier("t" + real[color[miss[num].substring(0,1).toInt() - 1]] + "_" + real[miss_ans[num]], "drawable", packageName) //drawableの画像指定
             val imageView_4 = ImageView(this)
             imageView_4.setImageResource(r_4) //imageViewに画像設定
             inlinearLayout_3_4.addView(imageView_4, param)
+            //ここまで
+
+
+/*
+            //ここから
+            val inlinearLayout_3_4_1 = LinearLayout(this)
+            inlinearLayout_3_4_1.orientation = LinearLayout.HORIZONTAL
+
+            val r_3_4_1_1 = resources.getIdentifier("t1_1_2_1_1", "drawable", packageName)
+            val imageButton_3_4_1_1 = ImageButton(this)
+            imageButton_3_4_1_1.setImageResource(r_3_4_1_1)
+            inlinearLayout_3_4_1.addView(imageButton_3_4_1_1, param)
+            imageButton_3_4_1_1.setOnClickListener{
+                val r = resources.getIdentifier("q1_1", "drawable", packageName) //drawableの画像指定
+                imageView_3.setImageResource(r) //imageViewに画像設定
+            }
+
+            val r_3_4_1_2 = resources.getIdentifier("t1_1_2_1_1", "drawable", packageName)
+            val imageButton_3_4_1_2 = ImageButton(this)
+            imageButton_3_4_1_2.setImageResource(r_3_4_1_2)
+            inlinearLayout_3_4_1.addView(imageButton_3_4_1_2, param)
+            imageButton_3_4_1_2.setOnClickListener{
+                val r = resources.getIdentifier("q2_1", "drawable", packageName) //drawableの画像指定
+                imageView_3.setImageResource(r) //imageViewに画像設定
+            }
+
+            val inlinearLayout_3_4_2 = LinearLayout(this)
+            inlinearLayout_3_4_2.orientation = LinearLayout.HORIZONTAL
+
+            val r_3_4_2_1 = resources.getIdentifier("t1_1_2_1_1", "drawable", packageName)
+            val imageButton_3_4_2_1 = ImageButton(this)
+            imageButton_3_4_2_1.setImageResource(r_3_4_2_1)
+            inlinearLayout_3_4_2.addView(imageButton_3_4_2_1, param)
+            imageButton_3_4_2_1.setOnClickListener{
+                val r = resources.getIdentifier("q3_1", "drawable", packageName) //drawableの画像指定
+                imageView_3.setImageResource(r) //imageViewに画像設定
+            }
+
+            val r_3_4_2_2 = resources.getIdentifier("t1_1_2_1_1", "drawable", packageName)
+            val imageButton_3_4_2_2 = ImageButton(this)
+            imageButton_3_4_2_2.setImageResource(r_3_4_2_2)
+            inlinearLayout_3_4_2.addView(imageButton_3_4_2_2, param)
+            imageButton_3_4_2_2.setOnClickListener{
+                val r = resources.getIdentifier("q4_1", "drawable", packageName) //drawableの画像指定
+                imageView_3.setImageResource(r) //imageViewに画像設定
+            }
+
+            val inlinearLayout_3_4_3 = LinearLayout(this)
+            inlinearLayout_3_4_3.orientation = LinearLayout.VERTICAL
+
+            val space_3_4_3_1 = Space(this)
+            inlinearLayout_3_4_3.addView(space_3_4_3_1, LinearLayout.LayoutParams(50, 50))
+
+            val button_3_4_3_1 = Button(this)
+            button_3_4_3_1.text = "全色表示"
+            button_3_4_3_1.textSize = 32.0f
+            inlinearLayout_3_4_3.addView(button_3_4_3_1, param)
+            button_3_4_3_1.setOnClickListener{
+                val r = resources.getIdentifier("m" + miss[num] + "_" + real[miss_ans[num]] , "drawable", packageName) //drawableの画像指
+                imageView_3.setImageResource(r) //imageViewに画像設定
+            }
+
+            inlinearLayout_3_4.addView(inlinearLayout_3_4_1, param)
+            inlinearLayout_3_4.addView(inlinearLayout_3_4_2, param)
+            inlinearLayout_3_4.addView(inlinearLayout_3_4_3, param)
+            //ここまで
+*/
+
+
 
             inlinearLayout_3.addView(inlinearLayout_3_4, param)
-
-
 
             val inlinearLayout_4 = LinearLayout(this)
             inlinearLayout_4.orientation = LinearLayout.HORIZONTAL
@@ -212,32 +305,118 @@ class CommentActivity : AppCompatActivity() {
             inlinearLayout_4_3.orientation = LinearLayout.VERTICAL
 
             val state_4 = TextView(this)
-            state_4.text = "特徴的な色を表示した舌"
+            state_4.text = "\n特徴的な色を表示した舌"
             state_4.textSize = 32.0f
             state_4.gravity = Gravity.CENTER
             inlinearLayout_4_3.addView(state_4, LinearLayout.LayoutParams(WC, WC))
 
-            val r_7 = resources.getIdentifier( "m" + real[miss_ans[num]]+ "_" + miss[num], "drawable", packageName) //drawableの画像指定
+            val r_7 = resources.getIdentifier("m" + real[miss_ans[num]] + "_" +  real[color[miss[num].substring(0,1).toInt() - 1]], "drawable", packageName) //drawableの画像指
             val imageView_7 = ImageView(this)
             imageView_7.setImageResource(r_7) //imageViewに画像設定
-            imageView_7.background = back
             inlinearLayout_4_3.addView(imageView_7, param)
 
             inlinearLayout_4.addView(inlinearLayout_4_3, param)
 
             val space_4_1 = Space(this)
-            inlinearLayout_4.addView(space_4_1, LinearLayout.LayoutParams(100, 50))
+            inlinearLayout_4.addView(space_4_1, LinearLayout.LayoutParams(50, 50))
 
             val inlinearLayout_4_4 = LinearLayout(this)
             inlinearLayout_4_4.orientation = LinearLayout.VERTICAL
 
+
+
+
+
+/*
+            val text_4_4_1 = TextView(this)
+            text_4_4_1.text = miss_ans[num] + "の\n特徴的な色"
+            text_4_4_1.textSize = 32.0f
+            text_4_4_1.gravity = Gravity.CENTER
+            inlinearLayout_4_4.addView(text_4_4_1, param)
+*/
+
+
+
+
+            //ここから
             val space_4_2 = Space(this)
             inlinearLayout_4_4.addView(space_4_2, LinearLayout.LayoutParams(100, 50))
-
+            // テンプレート
             val r_8 = resources.getIdentifier("t" + real[miss_ans[num]] + "_" + real[color[miss[num].substring(0,1).toInt() - 1]], "drawable", packageName) //drawableの画像指定
             val imageView_8 = ImageView(this)
             imageView_8.setImageResource(r_8) //imageViewに画像設定
             inlinearLayout_4_4.addView(imageView_8, param)
+            //ここまで
+
+
+
+
+/*
+            //ここから
+            val inlinearLayout_4_4_1 = LinearLayout(this)
+            inlinearLayout_4_4_1.orientation = LinearLayout.HORIZONTAL
+
+            val r_4_4_1_1 = resources.getIdentifier("t1_1_2_1_1", "drawable", packageName)
+            val imageButton_4_4_1_1 = ImageButton(this)
+            imageButton_4_4_1_1.setImageResource(r_4_4_1_1)
+            inlinearLayout_4_4_1.addView(imageButton_4_4_1_1, param)
+            imageButton_4_4_1_1.setOnClickListener{
+                val r = resources.getIdentifier("q1_1", "drawable", packageName) //drawableの画像指定
+                imageView_7.setImageResource(r) //imageViewに画像設定
+            }
+
+            val r_4_4_1_2 = resources.getIdentifier("t1_1_2_1_1", "drawable", packageName)
+            val imageButton_4_4_1_2 = ImageButton(this)
+            imageButton_4_4_1_2.setImageResource(r_4_4_1_2)
+            inlinearLayout_4_4_1.addView(imageButton_4_4_1_2, param)
+            imageButton_4_4_1_2.setOnClickListener{
+                val r = resources.getIdentifier("q2_1", "drawable", packageName) //drawableの画像指定
+                imageView_7.setImageResource(r) //imageViewに画像設定
+            }
+
+            val inlinearLayout_4_4_2 = LinearLayout(this)
+            inlinearLayout_4_4_2.orientation = LinearLayout.HORIZONTAL
+
+            val r_4_4_2_1 = resources.getIdentifier("t1_1_2_1_1", "drawable", packageName)
+            val imageButton_4_4_2_1 = ImageButton(this)
+            imageButton_4_4_2_1.setImageResource(r_4_4_2_1)
+            inlinearLayout_4_4_2.addView(imageButton_4_4_2_1, param)
+            imageButton_4_4_2_1.setOnClickListener{
+                val r = resources.getIdentifier("q3_1", "drawable", packageName) //drawableの画像指定
+                imageView_7.setImageResource(r) //imageViewに画像設定
+            }
+
+            val r_4_4_2_2 = resources.getIdentifier("t1_1_2_1_1", "drawable", packageName)
+            val imageButton_4_4_2_2 = ImageButton(this)
+            imageButton_4_4_2_2.setImageResource(r_4_4_2_2)
+            inlinearLayout_4_4_2.addView(imageButton_4_4_2_2, param)
+            imageButton_4_4_2_2.setOnClickListener{
+                val r = resources.getIdentifier("q4_1", "drawable", packageName) //drawableの画像指定
+                imageView_7.setImageResource(r) //imageViewに画像設定
+            }
+            val inlinearLayout_4_4_3 = LinearLayout(this)
+            inlinearLayout_4_4_3.orientation = LinearLayout.VERTICAL
+
+            val space_4_4_3_1 = Space(this)
+            inlinearLayout_4_4_3.addView(space_4_4_3_1, LinearLayout.LayoutParams(50, 50))
+
+            val button_4_4_3_1 = Button(this)
+            button_4_4_3_1.text = "全色表示"
+            button_4_4_3_1.textSize = 32.0f
+            inlinearLayout_4_4_3.addView(button_4_4_3_1, param)
+            button_4_4_3_1.setOnClickListener{
+                val r = resources.getIdentifier("m" + real[miss_ans[num]] + "_" +  real[color[miss[num].substring(0,1).toInt() - 1]], "drawable", packageName) //drawableの画像指
+                imageView_7.setImageResource(r) //imageViewに画像設定
+            }
+
+            inlinearLayout_4_4.addView(inlinearLayout_4_4_1, param)
+            inlinearLayout_4_4.addView(inlinearLayout_4_4_2, param)
+            inlinearLayout_4_4.addView(inlinearLayout_4_4_3, param)
+            //ここまで
+*/
+
+
+
 
             inlinearLayout_4.addView(inlinearLayout_4_4, param)
 
@@ -248,7 +427,7 @@ class CommentActivity : AppCompatActivity() {
             inlinearLayout_5.addView(space_5_1, LinearLayout.LayoutParams(550, 50))
 
             val text_3 = TextView(this)
-            text_3.text = "対比"
+            text_3.text = "\n対比"
             text_3.setTextColor(Color.BLUE)
             text_3.setTypeface(Typeface.create(Typeface.SERIF, Typeface.BOLD_ITALIC))
             text_3.textSize = 32.0f

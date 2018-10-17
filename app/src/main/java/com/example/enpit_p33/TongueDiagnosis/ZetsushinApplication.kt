@@ -10,9 +10,11 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
+// 一番最初にする処理
 class ZetsushinApplication : Application(){
     private lateinit var realm: Realm
 
+    // 画像番号
     val image = listOf("1_1", "1_2", "1_3", "2_1", "2_2", "2_3", "2_4", "2_5",
                            "2_6", "2_7", "2_8", "3_1", "3_3", "4_1", "4_2", "4_3",
                            "4_4", "4_5", "4_6", "4_7", "4_8")
@@ -20,7 +22,7 @@ class ZetsushinApplication : Application(){
     override fun onCreate(){
         super.onCreate()
 
-        Realm.init(this)
+        Realm.init(this) // realmの初期化
 
         saveDate()
 
@@ -40,6 +42,8 @@ class ZetsushinApplication : Application(){
 
 
     }
+
+    // 画像の番号をデータベースに保存
     private fun saveDate(){
         val realmConfig = RealmConfiguration.Builder()
                 .name("zetsushinleaning.realm")

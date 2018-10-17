@@ -90,7 +90,7 @@ class ResultActivity : AppCompatActivity() {
         inlinearLayout_1.addView(title, param)
 
         val question_statement = TextView(this)
-        question_statement.text = "正解と選んだ選択肢を見てみましょう。1回目、2回目の間違い個所を確認しましょう。"
+        question_statement.text = "正解と選んだ選択肢を見てみましょう。1回目、2回目の誤りを確認しましょう。\n1回目と2回目が共に正解の問は省略しています。\n誤りは赤、正解は青で表記しています。"
         question_statement.textSize = 32.0f
         inlinearLayout_1.addView(question_statement, LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT))
 
